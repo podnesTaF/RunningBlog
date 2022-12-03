@@ -1,0 +1,40 @@
+{
+  "name": "fronv",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@editorjs/editorjs": "^2.22.2",
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@hookform/resolvers": "^2.9.10",
+    "@mui/icons-material": "^5.10.15",
+    "@mui/material": "^5.10.15",
+    "@reduxjs/toolkit": "^1.9.1",
+    "axios": "^1.2.0",
+    "clsx": "^1.2.1",
+    "macro-css": "^1.0.5",
+    "next": "13.0.5",
+    "next-redux-wrapper": "7.0.5",
+    "nookies": "^2.5.2",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-hook-form": "^7.39.5",
+    "react-redux": "^8.0.5",
+    "sass": "^1.56.1",
+    "yup": "^0.32.11"
+  },
+  "devDependencies": {
+    "@types/node": "18.11.9",
+    "@types/react": "18.0.25",
+    "@types/react-dom": "18.0.9",
+    "eslint": "8.28.0",
+    "eslint-config-next": "13.0.5",
+    "typescript": "4.9.3"
+  }
+}
