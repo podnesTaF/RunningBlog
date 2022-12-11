@@ -1,6 +1,7 @@
 /** @format */
 
 import { OutputData } from '@editorjs/editorjs';
+import Post from "../../components/Post";
 
 export type LoginUserDto = {
   email: string;
@@ -9,13 +10,17 @@ export type LoginUserDto = {
 
 export type CreateUserDto = {
   fullName: string;
+  image?: string;
 } & LoginUserDto;
 
 export type ResponseUser = {
   createdAt: string;
   email: string;
   fullName: string;
+
+  image?: string
   id: number;
+  commentsCount: number;
   token: string;
   updatedAt: string;
 };
@@ -23,7 +28,7 @@ export type ResponseUser = {
 export type PostItem = {
   title: string;
   text: string;
-  image: any;
+  image?: string;
   description: string;
   tags: null | string;
   id: number;
@@ -32,3 +37,13 @@ export type PostItem = {
   createdAt: string;
   updatedAt: string;
 };
+
+
+export type CommentItem = {
+  id: number
+  text: string;
+  post: PostItem;
+  user: ResponseUser;
+  createdAt: string;
+  updatedAt: string;
+}

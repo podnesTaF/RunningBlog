@@ -2,10 +2,12 @@ import { UserService } from '../user/user.service';
 import { UserEntity } from '../user/entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from '../user/dto/create-user.dto';
+import { FileService } from "../file/file.service";
 export declare class AuthService {
     private userService;
     private jwtService;
-    constructor(userService: UserService, jwtService: JwtService);
+    private fileService;
+    constructor(userService: UserService, jwtService: JwtService, fileService: FileService);
     validateUser(email: string, password: string): Promise<any>;
     generateJwtToken(data: {
         id: number;
@@ -16,16 +18,23 @@ export declare class AuthService {
         id: number;
         fullName: string;
         email: string;
+        image: string;
         comments: import("../comment/entities/comment.entity").CommentEntity[];
+        followers: import("../user/entities/follows.entity").FollowsEntity[];
+        followings: import("../user/entities/follows.entity").FollowsEntity[];
         createdAt: Date;
         updatedAt: Date;
     }>;
-    register(dto: CreateUserDto): Promise<{
+    register(image: any, dto: CreateUserDto): Promise<{
         token: string;
+        follows: any[];
+        followers: any[] & import("../user/entities/follows.entity").FollowsEntity[];
         fullName: string;
         email: string;
+        image: string;
         id: number;
         comments: import("../comment/entities/comment.entity").CommentEntity[];
+        followings: import("../user/entities/follows.entity").FollowsEntity[];
         createdAt: Date;
         updatedAt: Date;
     }>;

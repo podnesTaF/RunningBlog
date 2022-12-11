@@ -14,7 +14,6 @@ export class CreatePostDto {
   text: string;
 
   @IsOptional()
-  @IsString()
   image: string;
 
   @IsOptional()

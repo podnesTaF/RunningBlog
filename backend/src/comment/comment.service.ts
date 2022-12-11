@@ -12,14 +12,14 @@ export class CommentService {
     private repository: Repository<CommentEntity>,
   ) {}
 
-  async create(dto: CreateCommentDto, userId: number) {
+   async create(dto: CreateCommentDto, userId: number) {
     const comment = await this.repository.save({
       text: dto.text,
       post: { id: dto.postId },
       user: { id: userId },
     });
-
-    return this.repository.findOne({ where: { id: comment.id } });
+    return this.repository.findOne( {
+      relations: ['user'], where: {id: comment.id} },)
   }
 
   async findAll(postId: number) {

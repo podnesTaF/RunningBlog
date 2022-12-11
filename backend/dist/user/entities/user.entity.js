@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserEntity = void 0;
 const typeorm_1 = require("typeorm");
 const comment_entity_1 = require("../../comment/entities/comment.entity");
+const follows_entity_1 = require("./follows.entity");
 let UserEntity = class UserEntity {
 };
 __decorate([
@@ -29,12 +30,24 @@ __decorate([
     __metadata("design:type", String)
 ], UserEntity.prototype, "email", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], UserEntity.prototype, "image", void 0);
+__decorate([
     (0, typeorm_1.OneToMany)(() => comment_entity_1.CommentEntity, (comment) => comment.user, {
         eager: false,
         nullable: true,
     }),
     __metadata("design:type", Array)
 ], UserEntity.prototype, "comments", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => follows_entity_1.FollowsEntity, follows => follows.following),
+    __metadata("design:type", Array)
+], UserEntity.prototype, "followers", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => follows_entity_1.FollowsEntity, follows => follows.follower),
+    __metadata("design:type", Array)
+], UserEntity.prototype, "followings", void 0);
 __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)

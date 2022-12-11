@@ -24,10 +24,12 @@ exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
 const user_service_1 = require("../user/user.service");
 const jwt_1 = require("@nestjs/jwt");
+const file_service_1 = require("../file/file.service");
 let AuthService = class AuthService {
-    constructor(userService, jwtService) {
+    constructor(userService, jwtService, fileService) {
         this.userService = userService;
         this.jwtService = jwtService;
+        this.fileService = fileService;
     }
     async validateUser(email, password) {
         const user = await this.userService.findByCond({
@@ -48,12 +50,20 @@ let AuthService = class AuthService {
         const { password } = user, userData = __rest(user, ["password"]);
         return Object.assign(Object.assign({}, userData), { token: this.generateJwtToken(userData) });
     }
-    async register(dto) {
+    async register(image, dto) {
+        let imagePath;
+        if (image) {
+            imagePath = this.fileService.createFile(file_service_1.FileType.AVATAR, image);
+        }
+        else {
+            imagePath = null;
+        }
         try {
             const _a = await this.userService.create({
                 email: dto.email,
                 fullName: dto.fullName,
                 password: dto.password,
+                image: imagePath
             }), { password } = _a, userData = __rest(_a, ["password"]);
             return Object.assign(Object.assign({}, userData), { token: this.generateJwtToken(userData) });
         }
@@ -65,7 +75,8 @@ let AuthService = class AuthService {
 AuthService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [user_service_1.UserService,
-        jwt_1.JwtService])
+        jwt_1.JwtService,
+        file_service_1.FileService])
 ], AuthService);
 exports.AuthService = AuthService;
 //# sourceMappingURL=auth.service.js.map

@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const auth_service_1 = require("./auth.service");
 const local_auth_guard_1 = require("./guards/local-auth.guard");
 const create_user_dto_1 = require("../user/dto/create-user.dto");
+const platform_express_1 = require("@nestjs/platform-express");
 let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
@@ -24,8 +25,14 @@ let AuthController = class AuthController {
     async login(req) {
         return this.authService.login(req.user);
     }
-    register(dto) {
-        return this.authService.register(dto);
+    register(files, dto) {
+        const { image } = files;
+        if (image) {
+            return this.authService.register(image[0], dto);
+        }
+        else {
+            return this.authService.register(null, dto);
+        }
     }
 };
 __decorate([
@@ -38,9 +45,13 @@ __decorate([
 ], AuthController.prototype, "login", null);
 __decorate([
     (0, common_1.Post)('register'),
-    __param(0, (0, common_1.Body)()),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileFieldsInterceptor)([
+        { name: 'image', maxCount: 1 },
+    ])),
+    __param(0, (0, common_1.UploadedFiles)()),
+    __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_user_dto_1.CreateUserDto]),
+    __metadata("design:paramtypes", [Object, create_user_dto_1.CreateUserDto]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "register", null);
 AuthController = __decorate([

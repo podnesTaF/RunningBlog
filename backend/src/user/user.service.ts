@@ -16,7 +16,7 @@ export class UserService {
   ) {}
 
   create(dto: CreateUserDto) {
-    return this.repository.save(dto);
+    return this.repository.save({...dto, follows: [], followers: []});
   }
 
   async findAll() {
@@ -71,5 +71,11 @@ export class UserService {
     const [items, total] = await qb.getManyAndCount();
 
     return { items, total };
+  }
+
+  async addToFollows(followerId: number, followingId: number) {
+    const follower = await this.repository.findOne({where: {id: followerId}})
+    const followed = await this.repository.findOne({where: {id: followingId}})
+
   }
 }

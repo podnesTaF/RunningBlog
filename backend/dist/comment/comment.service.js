@@ -27,7 +27,9 @@ let CommentService = class CommentService {
             post: { id: dto.postId },
             user: { id: userId },
         });
-        return this.repository.findOne({ where: { id: comment.id } });
+        return this.repository.findOne({
+            relations: ['user'], where: { id: comment.id }
+        });
     }
     async findAll(postId) {
         const qb = this.repository.createQueryBuilder('c');

@@ -17,9 +17,11 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const post_entity_1 = require("./entities/post.entity");
+const file_service_1 = require("../file/file.service");
 let PostService = class PostService {
-    constructor(repository) {
+    constructor(repository, fileService) {
         this.repository = repository;
+        this.fileService = fileService;
     }
     findAll() {
         return this.repository.find({
@@ -75,27 +77,36 @@ let PostService = class PostService {
             .execute();
         return this.repository.findOne({ where: { id } });
     }
-    create(dto, userId) {
+    create(image, dto, userId) {
+        let imagePath;
+        if (image) {
+            imagePath = this.fileService.createFile(file_service_1.FileType.IMAGE, image);
+        }
+        else {
+            imagePath = null;
+        }
         const firstParagraph = dto.text.slice(0, 20);
         return this.repository.save({
             title: dto.title,
             text: dto.text,
-            image: dto.image,
+            image: imagePath,
             tags: dto.tags,
             user: { id: userId },
             description: firstParagraph || '',
         });
     }
-    async update(id, dto, userId) {
+    async update(image, id, dto, userId) {
+        var _a;
         const find = await this.repository.findOne({ where: { id: +id } });
+        const imagePath = this.fileService.createFile(file_service_1.FileType.IMAGE, image);
         if (!find) {
             throw new common_1.NotFoundException('Article not found');
         }
-        const firstParagraph = dto.text.slice(0, 20);
+        const firstParagraph = (_a = dto.text) === null || _a === void 0 ? void 0 : _a.slice(0, 20);
         return this.repository.update(id, {
             title: dto.title,
             text: dto.text,
-            image: dto.image,
+            image: imagePath,
             tags: dto.tags,
             user: { id: userId },
             description: firstParagraph || '',
@@ -115,7 +126,8 @@ let PostService = class PostService {
 PostService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(post_entity_1.PostEntity)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        file_service_1.FileService])
 ], PostService);
 exports.PostService = PostService;
 //# sourceMappingURL=post.service.js.map
