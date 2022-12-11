@@ -21,7 +21,8 @@ const file_module_1 = require("./file/file.module");
 const serve_static_1 = require("@nestjs/serve-static");
 const path_1 = require("path");
 const comment_module_1 = require("./comment/comment.module");
-const follows_entity_1 = require("./user/entities/follows.entity");
+const follows_entity_1 = require("./follows/entities/follows.entity");
+const follows_module_1 = require("./follows/follows.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -43,6 +44,7 @@ AppModule = __decorate([
                 rootPath: (0, path_1.resolve)(__dirname, 'static'),
             }),
             comment_module_1.CommentModule,
+            follows_module_1.FollowsModule,
             auth_module_1.AuthModule,
             file_module_1.FileModule,
         ],

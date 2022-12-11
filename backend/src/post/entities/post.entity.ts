@@ -6,7 +6,6 @@ import {
   UpdateDateColumn,
   ManyToOne,
 } from 'typeorm';
-import { OutputBlockData } from '../dto/create-post.dto';
 import { UserEntity } from '../../user/entities/user.entity';
 
 @Entity('posts')
@@ -25,6 +24,9 @@ export class PostEntity {
 
   @Column()
   description: string;
+
+  @Column()
+  userId: number;
 
   @ManyToOne(() => UserEntity, { eager: true })
   user: UserEntity;

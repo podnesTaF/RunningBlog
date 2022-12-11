@@ -12,5 +12,4 @@ export declare class UserController {
         total: number;
     }>;
     findOne(id: string): Promise<import("./entities/user.entity").UserEntity>;
-    addToFollows(req: any, followedId: number): Promise<void>;
 }

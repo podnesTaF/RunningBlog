@@ -12,7 +12,8 @@ import {FileModule} from "./file/file.module";
 import {ServeStaticModule} from "@nestjs/serve-static";
 import {resolve} from "path";
 import {CommentModule} from "./comment/comment.module";
-import {FollowsEntity} from "./user/entities/follows.entity";
+import {FollowsEntity} from "./follows/entities/follows.entity";
+import {FollowsModule} from "./follows/follows.module";
 
 @Module({
     imports: [
@@ -32,6 +33,7 @@ import {FollowsEntity} from "./user/entities/follows.entity";
             rootPath: resolve(__dirname, 'static'),
         }),
         CommentModule,
+        FollowsModule,
         AuthModule,
         FileModule,
     ],

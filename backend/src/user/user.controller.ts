@@ -43,9 +43,4 @@ export class UserController {
   findOne(@Param('id') id: string) {
     return this.userService.findById(+id);
   }
-
-  @Post('add-to-follows')
-  addToFollows(@Request() req, @Body() followedId: number) {
-      return this.userService.addToFollows(+req.user.id, followedId);
-  }
 }

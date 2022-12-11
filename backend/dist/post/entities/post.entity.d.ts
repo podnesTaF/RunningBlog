@@ -5,6 +5,7 @@ export declare class PostEntity {
     text: string;
     image: string;
     description: string;
+    userId: number;
     user: UserEntity;
     views: number;
     tags?: string;

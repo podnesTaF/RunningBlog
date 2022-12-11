@@ -66,7 +66,7 @@ export default function Profile() {
       </Paper>
       <div className="d-flex align-start">
         <div className="mr-20 flex">
-          <Post id={1} title='Hello' text='Im stupid eye' />
+          <Post id={1} title='Hello' text='Im stupid eye'  description='daweghgfa' />
         </div>
         <Paper style={{ width: 300 }} className="p-20 mb-20" elevation={0}>
           <b>Followers</b>

@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { LoginUserDto } from './dto/login-user.dto';
 import { SearchUserDto } from './dto/searchg-user.dto';
 import { CommentEntity } from '../comment/entities/comment.entity';
+import {FollowsEntity} from "../follows/entities/follows.entity";
 
 @Injectable()
 export class UserService {
@@ -20,20 +21,25 @@ export class UserService {
   }
 
   async findAll() {
-    const arr = await this.repository
-      .createQueryBuilder('u')
-      .leftJoinAndMapMany(
+    const qb = await this.repository.createQueryBuilder('u')
+
+    await qb.leftJoinAndMapMany('u.followers', FollowsEntity, 'following', 'following.followingId = u.id').loadRelationCountAndMap('u.followingsCount', 'u.followings', 'followings').getMany()
+
+    await qb.leftJoinAndMapMany(
         'u.comments',
         CommentEntity,
         'comment',
         'comment.userId = u.id',
-      )
-      .loadRelationCountAndMap('u.commentsCount', 'u.comments', 'comments')
-      .getMany();
+    )
+        .loadRelationCountAndMap('u.commentsCount', 'u.comments', 'comments')
+        .getMany();
 
-    return arr.map((obj) => {
-      delete obj.comments;
-      return obj;
+    const users = await qb.leftJoinAndMapMany('u.followings', FollowsEntity, 'follower', 'follower.followerId = u.id').loadRelationCountAndMap('u.followerCount', 'u.followers', 'followers')
+        .getMany()
+
+    return users.map((obj) => {
+      delete obj.comments
+      return obj
     });
   }
 
@@ -73,9 +79,4 @@ export class UserService {
     return { items, total };
   }
 
-  async addToFollows(followerId: number, followingId: number) {
-    const follower = await this.repository.findOne({where: {id: followerId}})
-    const followed = await this.repository.findOne({where: {id: followingId}})
-
-  }
 }

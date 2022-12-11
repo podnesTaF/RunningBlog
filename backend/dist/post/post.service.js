@@ -23,8 +23,18 @@ let PostService = class PostService {
         this.repository = repository;
         this.fileService = fileService;
     }
-    findAll() {
+    findAll(ids) {
+        if (!ids) {
+            return this.repository.find({
+                order: {
+                    createdAt: 'DESC',
+                },
+            });
+        }
         return this.repository.find({
+            where: ids.map(id => {
+                return { userId: id };
+            }),
             order: {
                 createdAt: 'DESC',
             },
@@ -91,6 +101,7 @@ let PostService = class PostService {
             text: dto.text,
             image: imagePath,
             tags: dto.tags,
+            userId: userId,
             user: { id: userId },
             description: firstParagraph || '',
         });
