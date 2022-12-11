@@ -1,7 +1,7 @@
 /** @format */
 
 import axios, { AxiosInstance } from 'axios';
-import { CreateUserDto, LoginUserDto, ResponseUser } from './types';
+import {CreateUserDto, Follow, LoginUserDto, ResponseUser} from './types';
 
 export const UserApi = (instance: AxiosInstance) => ({
   async getAll() {
@@ -31,4 +31,9 @@ export const UserApi = (instance: AxiosInstance) => ({
     const { data } = await instance.get<ResponseUser>('users/me');
     return data;
   },
+
+  async getFollows() {
+    const {data} = await instance.get<Follow[]>('/follows');
+    return data
+  }
 });

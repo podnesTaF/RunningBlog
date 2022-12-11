@@ -41,8 +41,15 @@ let PostController = class PostController {
     remove(userId, id) {
         return this.postService.remove(+id, userId);
     }
-    findAll() {
-        return this.postService.findAll();
+    findAll(query) {
+        if (query) {
+            const strings = query.split(',');
+            const ids = strings.map(id => +id);
+            return this.postService.findAll(ids);
+        }
+        else {
+            return this.postService.findAll();
+        }
     }
     getPopularPosts() {
         return this.postService.popular();
@@ -92,8 +99,9 @@ __decorate([
 ], PostController.prototype, "remove", null);
 __decorate([
     (0, common_1.Get)(),
+    __param(0, (0, common_1.Query)('query')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], PostController.prototype, "findAll", null);
 __decorate([

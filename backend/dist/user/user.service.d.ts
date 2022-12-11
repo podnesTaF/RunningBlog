@@ -23,5 +23,4 @@ export declare class UserService {
         items: UserEntity[];
         total: number;
     }>;
-    addToFollows(followerId: number, followingId: number): Promise<void>;
 }

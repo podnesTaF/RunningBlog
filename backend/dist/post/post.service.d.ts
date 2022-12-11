@@ -8,7 +8,7 @@ export declare class PostService {
     private repository;
     private fileService;
     constructor(repository: Repository<PostEntity>, fileService: FileService);
-    findAll(): Promise<PostEntity[]>;
+    findAll(ids?: number[]): Promise<PostEntity[]>;
     popular(): Promise<{
         items: PostEntity[];
         total: number;
@@ -23,6 +23,7 @@ export declare class PostService {
         text: string;
         image: any;
         tags: string;
+        userId: number;
         user: {
             id: number;
         };

@@ -7,7 +7,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { CommentEntity } from '../../comment/entities/comment.entity';
-import {FollowsEntity} from "./follows.entity";
+import {FollowsEntity} from "../../follows/entities/follows.entity";
 
 @Entity('users')
 export class UserEntity {

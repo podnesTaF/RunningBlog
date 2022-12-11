@@ -20,8 +20,12 @@ type SearchPostDto = {
 }
 
 export const PostApi = (instance: AxiosInstance) => ({
-    async getAll() {
-        const {data} = await instance.get<PostItem[]>('/posts');
+    async getAll(ids?: number[]) {
+        let query = '';
+        if (ids) {
+            query = ids.join(',')
+        }
+        const {data} = await instance.get<PostItem[]>('/posts?query=' + query);
         return data;
     },
 

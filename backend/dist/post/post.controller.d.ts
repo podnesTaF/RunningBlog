@@ -10,6 +10,7 @@ export declare class PostController {
         text: string;
         image: any;
         tags: string;
+        userId: number;
         user: {
             id: number;
         };
@@ -17,7 +18,7 @@ export declare class PostController {
     } & import("./entities/post.entity").PostEntity>;
     update(files: any, userId: number, id: string, updatePostDto: UpdatePostDto): Promise<import("typeorm").UpdateResult>;
     remove(userId: number, id: string): Promise<import("typeorm").DeleteResult>;
-    findAll(): Promise<import("./entities/post.entity").PostEntity[]>;
+    findAll(query: string): Promise<import("./entities/post.entity").PostEntity[]>;
     getPopularPosts(): Promise<{
         items: import("./entities/post.entity").PostEntity[];
         total: number;

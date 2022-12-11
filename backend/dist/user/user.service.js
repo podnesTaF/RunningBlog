@@ -18,6 +18,7 @@ const typeorm_1 = require("@nestjs/typeorm");
 const user_entity_1 = require("./entities/user.entity");
 const typeorm_2 = require("typeorm");
 const comment_entity_1 = require("../comment/entities/comment.entity");
+const follows_entity_1 = require("../follows/entities/follows.entity");
 let UserService = class UserService {
     constructor(repository) {
         this.repository = repository;
@@ -26,12 +27,14 @@ let UserService = class UserService {
         return this.repository.save(Object.assign(Object.assign({}, dto), { follows: [], followers: [] }));
     }
     async findAll() {
-        const arr = await this.repository
-            .createQueryBuilder('u')
-            .leftJoinAndMapMany('u.comments', comment_entity_1.CommentEntity, 'comment', 'comment.userId = u.id')
+        const qb = await this.repository.createQueryBuilder('u');
+        await qb.leftJoinAndMapMany('u.followers', follows_entity_1.FollowsEntity, 'following', 'following.followingId = u.id').loadRelationCountAndMap('u.followingsCount', 'u.followings', 'followings').getMany();
+        await qb.leftJoinAndMapMany('u.comments', comment_entity_1.CommentEntity, 'comment', 'comment.userId = u.id')
             .loadRelationCountAndMap('u.commentsCount', 'u.comments', 'comments')
             .getMany();
-        return arr.map((obj) => {
+        const users = await qb.leftJoinAndMapMany('u.followings', follows_entity_1.FollowsEntity, 'follower', 'follower.followerId = u.id').loadRelationCountAndMap('u.followerCount', 'u.followers', 'followers')
+            .getMany();
+        return users.map((obj) => {
             delete obj.comments;
             return obj;
         });
@@ -61,10 +64,6 @@ let UserService = class UserService {
         });
         const [items, total] = await qb.getManyAndCount();
         return { items, total };
-    }
-    async addToFollows(followerId, followingId) {
-        const follower = await this.repository.findOne({ where: { id: followerId } });
-        const followed = await this.repository.findOne({ where: { id: followingId } });
     }
 };
 UserService = __decorate([

@@ -69,8 +69,14 @@ export class PostController {
     // }
 
     @Get()
-    findAll() {
-        return this.postService.findAll();
+    findAll(@Query('query') query: string) {
+        if (query) {
+            const strings = query.split(',');
+            const ids = strings.map(id => +id)
+            return this.postService.findAll(ids);
+        } else {
+            return this.postService.findAll();
+        }
     }
 
     @Get('/popular')

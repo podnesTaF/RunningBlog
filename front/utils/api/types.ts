@@ -13,6 +13,12 @@ export type CreateUserDto = {
   image?: string;
 } & LoginUserDto;
 
+export type Follow = {
+  id: number;
+  followingId: ResponseUser;
+  followerId: ResponseUser;
+}
+
 export type ResponseUser = {
   createdAt: string;
   email: string;
@@ -20,7 +26,16 @@ export type ResponseUser = {
 
   image?: string
   id: number;
-  commentsCount: number;
+  commentsCount?: number;
+  followers?: {
+    id: number
+  }[];
+  followings?: {
+    id: number
+  }[];
+
+  followingsCount: number;
+  followerCount: number;
   token: string;
   updatedAt: string;
 };
