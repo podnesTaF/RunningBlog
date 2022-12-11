@@ -23,7 +23,7 @@ let UserService = class UserService {
         this.repository = repository;
     }
     create(dto) {
-        return this.repository.save(dto);
+        return this.repository.save(Object.assign(Object.assign({}, dto), { follows: [], followers: [] }));
     }
     async findAll() {
         const arr = await this.repository
@@ -61,6 +61,10 @@ let UserService = class UserService {
         });
         const [items, total] = await qb.getManyAndCount();
         return { items, total };
+    }
+    async addToFollows(followerId, followingId) {
+        const follower = await this.repository.findOne({ where: { id: followerId } });
+        const followed = await this.repository.findOne({ where: { id: followingId } });
     }
 };
 UserService = __decorate([

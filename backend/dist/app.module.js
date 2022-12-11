@@ -15,9 +15,13 @@ const user_module_1 = require("./user/user.module");
 const user_entity_1 = require("./user/entities/user.entity");
 const post_module_1 = require("./post/post.module");
 const post_entity_1 = require("./post/entities/post.entity");
-const comment_module_1 = require("./comment/comment.module");
 const comment_entity_1 = require("./comment/entities/comment.entity");
 const auth_module_1 = require("./auth/auth.module");
+const file_module_1 = require("./file/file.module");
+const serve_static_1 = require("@nestjs/serve-static");
+const path_1 = require("path");
+const comment_module_1 = require("./comment/comment.module");
+const follows_entity_1 = require("./user/entities/follows.entity");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -30,13 +34,17 @@ AppModule = __decorate([
                 username: 'postgres',
                 password: 'podnes1972',
                 database: 'postgres',
-                entities: [user_entity_1.UserEntity, post_entity_1.PostEntity, comment_entity_1.CommentEntity],
+                entities: [user_entity_1.UserEntity, post_entity_1.PostEntity, comment_entity_1.CommentEntity, follows_entity_1.FollowsEntity],
                 synchronize: true,
             }),
             user_module_1.UserModule,
             post_module_1.PostModule,
+            serve_static_1.ServeStaticModule.forRoot({
+                rootPath: (0, path_1.resolve)(__dirname, 'static'),
+            }),
             comment_module_1.CommentModule,
             auth_module_1.AuthModule,
+            file_module_1.FileModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

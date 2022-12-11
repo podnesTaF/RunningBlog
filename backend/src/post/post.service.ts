@@ -1,7 +1,7 @@
 import {
   ForbiddenException,
   Injectable,
-  NotFoundException,
+  NotFoundException, UploadedFile,
 } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
@@ -9,12 +9,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PostEntity } from './entities/post.entity';
 import { SearchPostDto } from './dto/searchg-post.dto';
+import {FileService, FileType} from "../file/file.service";
 
 @Injectable()
 export class PostService {
   constructor(
     @InjectRepository(PostEntity)
     private repository: Repository<PostEntity>,
+    private fileService: FileService,
   ) {}
 
   findAll() {
@@ -88,30 +90,39 @@ export class PostService {
     return this.repository.findOne({ where: { id } });
   }
 
-  create(dto: CreatePostDto, userId: number) {
+  create(image, dto: CreatePostDto, userId: number) {
+    let imagePath
+    if(image) {
+      imagePath = this.fileService.createFile(FileType.IMAGE, image)
+    } else {
+      imagePath = null
+    }
+
     const firstParagraph = dto.text.slice(0, 20);
     return this.repository.save({
       title: dto.title,
       text: dto.text,
-      image: dto.image,
+      image: imagePath,
       tags: dto.tags,
       user: { id: userId },
       description: firstParagraph || '',
     });
   }
 
-  async update(id: number, dto: UpdatePostDto, userId: number) {
+  async update(image, id: number, dto: UpdatePostDto, userId: number) {
     const find = await this.repository.findOne({ where: { id: +id } });
+
+    const imagePath = this.fileService.createFile(FileType.IMAGE, image)
 
     if (!find) {
       throw new NotFoundException('Article not found');
     }
 
-    const firstParagraph = dto.text.slice(0, 20);
+    const firstParagraph = dto.text?.slice(0, 20);
     return this.repository.update(id, {
       title: dto.title,
       text: dto.text,
-      image: dto.image,
+      image: imagePath,
       tags: dto.tags,
       user: { id: userId },
       description: firstParagraph || '',

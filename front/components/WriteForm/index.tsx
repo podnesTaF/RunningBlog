@@ -16,7 +16,7 @@ const WriteForm: React.FC<WriteFormProps> = ({data}) => {
     const router = useRouter()
     const [title, setTitle] = useState(data?.title || '');
     const [text, setText] = useState(data?.text || '');
-    const [image, setImage] = useState(data?.image || '')
+    const [image, setImage] = useState();
     const [previewUrl, setPreviewUrl] = useState('')
     const [isHover, setIsHover] = useState(false)
     const [valid, setValid] = useState(false);
@@ -30,10 +30,9 @@ const WriteForm: React.FC<WriteFormProps> = ({data}) => {
         const fileReader = new FileReader()
         fileReader.onload = () => {
             // @ts-ignore
-            console.log(fileReader.result)
-            // @ts-ignore
             setPreviewUrl(fileReader.result)
         }
+        console.log(image)
         fileReader.readAsDataURL(image)
     }, [image]);
 
@@ -88,11 +87,16 @@ const WriteForm: React.FC<WriteFormProps> = ({data}) => {
             const pickedFile = e.target.files[0]
             setImage(pickedFile)
             setValid(true)
-            console.log(pickedFile)
         } else {
             setValid(false)
         }
     }
+
+    const handleDelete = () => {
+        setPreviewUrl('')
+        setImage(undefined)
+    }
+
     return (
         <div className={styles.postContainer}>
             <div className={styles.headWrapper}>
@@ -125,8 +129,6 @@ const WriteForm: React.FC<WriteFormProps> = ({data}) => {
                 autoFocus
                 name='text'
                 placeholder="What's going on"
-                maxLength={255}
-                style={{height: '137px'}}
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 className={styles.textField}>
@@ -134,9 +136,8 @@ const WriteForm: React.FC<WriteFormProps> = ({data}) => {
             <div className={styles.imageUpload}>
                 <div onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)} className={styles.imageUploadPreview}>
                     {previewUrl && valid && <img src={previewUrl}  alt='Preview' />}
-                    {isHover && <div className={styles.deletePreview} onClick={() => setPreviewUrl('')}>DELETE</div>}
+                    {isHover && <div className={styles.deletePreview} onClick={handleDelete}>DELETE</div>}
                 </div>
-                {!valid && <h1 className={styles.notValid}>The format of photo is not valid <span>add photo with .jpg,.pgn,jpeg format</span></h1>}
             </div>
             <div
                 className={clsx(styles.dragContainer, drag && styles.dropZone)}
@@ -148,7 +149,7 @@ const WriteForm: React.FC<WriteFormProps> = ({data}) => {
                 <input
                     ref={pickImageRef}
                     type='file' style={{display: 'none'}}
-                    accept=".jpg,.png,.jpeg"
+                    accept=".jpg,.png,.jpeg,.webp"
                     onChange={pickedHandler}
                 />
 

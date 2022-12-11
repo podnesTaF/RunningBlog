@@ -3,9 +3,11 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import { Repository } from 'typeorm';
 import { PostEntity } from './entities/post.entity';
 import { SearchPostDto } from './dto/searchg-post.dto';
+import { FileService } from "../file/file.service";
 export declare class PostService {
     private repository;
-    constructor(repository: Repository<PostEntity>);
+    private fileService;
+    constructor(repository: Repository<PostEntity>, fileService: FileService);
     findAll(): Promise<PostEntity[]>;
     popular(): Promise<{
         items: PostEntity[];
@@ -16,16 +18,16 @@ export declare class PostService {
         total: number;
     }>;
     findOne(id: number): Promise<PostEntity>;
-    create(dto: CreatePostDto, userId: number): Promise<{
+    create(image: any, dto: CreatePostDto, userId: number): Promise<{
         title: string;
         text: string;
-        image: string;
+        image: any;
         tags: string;
         user: {
             id: number;
         };
         description: string;
     } & PostEntity>;
-    update(id: number, dto: UpdatePostDto, userId: number): Promise<import("typeorm").UpdateResult>;
+    update(image: any, id: number, dto: UpdatePostDto, userId: number): Promise<import("typeorm").UpdateResult>;
     remove(id: number, userId: number): Promise<import("typeorm").DeleteResult>;
 }

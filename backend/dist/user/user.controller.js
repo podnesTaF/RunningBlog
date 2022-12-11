@@ -37,6 +37,9 @@ let UserController = class UserController {
     findOne(id) {
         return this.userService.findById(+id);
     }
+    addToFollows(req, followedId) {
+        return this.userService.addToFollows(+req.user.id, followedId);
+    }
 };
 __decorate([
     (0, common_1.Get)(),
@@ -75,6 +78,14 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "findOne", null);
+__decorate([
+    (0, common_1.Post)('add-to-follows'),
+    __param(0, (0, common_1.Request)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Number]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "addToFollows", null);
 UserController = __decorate([
     (0, common_1.Controller)('users'),
     __metadata("design:paramtypes", [user_service_1.UserService])

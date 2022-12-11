@@ -7,7 +7,14 @@ import { SearchUserDto } from './dto/searchg-user.dto';
 export declare class UserService {
     private repository;
     constructor(repository: Repository<UserEntity>);
-    create(dto: CreateUserDto): Promise<CreateUserDto & UserEntity>;
+    create(dto: CreateUserDto): Promise<{
+        follows: any[];
+        followers: any[];
+        fullName: string;
+        email: string;
+        password?: string;
+        image: string;
+    } & UserEntity>;
     findAll(): Promise<UserEntity[]>;
     findById(id: number): Promise<UserEntity>;
     findByCond(cond: LoginUserDto): Promise<UserEntity>;
@@ -16,4 +23,5 @@ export declare class UserService {
         items: UserEntity[];
         total: number;
     }>;
+    addToFollows(followerId: number, followingId: number): Promise<void>;
 }

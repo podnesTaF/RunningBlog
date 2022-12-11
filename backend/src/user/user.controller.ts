@@ -6,7 +6,7 @@ import {
   Param,
   UseGuards,
   Request,
-  Query,
+  Query, Post,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -42,5 +42,10 @@ export class UserController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.userService.findById(+id);
+  }
+
+  @Post('add-to-follows')
+  addToFollows(@Request() req, @Body() followedId: number) {
+      return this.userService.addToFollows(+req.user.id, followedId);
   }
 }

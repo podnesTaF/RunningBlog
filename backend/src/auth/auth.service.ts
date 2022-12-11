@@ -3,12 +3,14 @@ import { UserService } from '../user/user.service';
 import { UserEntity } from '../user/entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from '../user/dto/create-user.dto';
+import {FileService, FileType} from "../file/file.service";
 
 @Injectable()
 export class AuthService {
   constructor(
     private userService: UserService,
     private jwtService: JwtService,
+    private fileService: FileService,
   ) {}
 
   async validateUser(email: string, password: string): Promise<any> {
@@ -36,12 +38,19 @@ export class AuthService {
     };
   }
 
-  async register(dto: CreateUserDto) {
+  async register(image, dto: CreateUserDto) {
+    let imagePath
+    if (image) {
+      imagePath = this.fileService.createFile(FileType.AVATAR, image)
+    } else {
+      imagePath = null
+    }
     try {
       const { password, ...userData } = await this.userService.create({
         email: dto.email,
         fullName: dto.fullName,
         password: dto.password,
+        image: imagePath
       });
       return {
         ...userData,

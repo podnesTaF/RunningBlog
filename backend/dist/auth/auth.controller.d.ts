@@ -8,16 +8,23 @@ export declare class AuthController {
         id: number;
         fullName: string;
         email: string;
+        image: string;
         comments: import("../comment/entities/comment.entity").CommentEntity[];
+        followers: import("../user/entities/follows.entity").FollowsEntity[];
+        followings: import("../user/entities/follows.entity").FollowsEntity[];
         createdAt: Date;
         updatedAt: Date;
     }>;
-    register(dto: CreateUserDto): Promise<{
+    register(files: any, dto: CreateUserDto): Promise<{
         token: string;
+        follows: any[];
+        followers: any[] & import("../user/entities/follows.entity").FollowsEntity[];
         fullName: string;
         email: string;
+        image: string;
         id: number;
         comments: import("../comment/entities/comment.entity").CommentEntity[];
+        followings: import("../user/entities/follows.entity").FollowsEntity[];
         createdAt: Date;
         updatedAt: Date;
     }>;

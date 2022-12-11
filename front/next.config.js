@@ -10,6 +10,6 @@ module.exports = {
     includePaths: [path.join(__dirname, 'styles')],
   },
   images: {
-    domains: ['leonardo.osnova.io', 'upload.wikimedia.org'],
+    domains: ['leonardo.osnova.io', 'upload.wikimedia.org', 'localhost'],
   },
 };
