@@ -32,6 +32,16 @@ export const UserApi = (instance: AxiosInstance) => ({
     return data;
   },
 
+  async getOne(id: number){
+    const { data } = await instance.get<ResponseUser>('users/' + id)
+    return data
+  },
+
+  async getComments(id: number) {
+    const { data } = await instance.get<ResponseUser>('/comments?userId=' + id);
+    return data;
+  },
+
   async getFollows() {
     const {data} = await instance.get<Follow[]>('/follows');
     return data

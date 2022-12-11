@@ -15,7 +15,7 @@ interface CommentPostProps {
     currUserId: number | undefined;
     text: string;
     createdAt: string;
-    onRemove: (id: number) => void;
+    onRemove?: (id: number) => void;
 
 }
 
@@ -34,7 +34,9 @@ const Comment: React.FC<CommentPostProps> = ({id, user, text, createdAt, currUse
         if(window.confirm('Are you sure?')){
             try {
                 await Api().comment.remove(id)
-                onRemove(id)
+                if (onRemove) {
+                    onRemove(id)
+                }
             } catch (err) {
                 console.warn('Error deleting comment', err)
                 alert('cannot delete comment')
@@ -54,9 +56,8 @@ const Comment: React.FC<CommentPostProps> = ({id, user, text, createdAt, currUse
                 <span>{createdAt}</span>
             </div>
             <Typography className={styles.text}>{text}</Typography>
-            <span className={styles.replyBtn}>Reply</span>
 
-            {user.id === currUserId &&
+            {user.id === currUserId && onRemove &&
                 <>
                     <IconButton onClick={handleClick}>
                         <MoreIcon/>

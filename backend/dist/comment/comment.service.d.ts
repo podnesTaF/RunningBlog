@@ -6,7 +6,7 @@ export declare class CommentService {
     private repository;
     constructor(repository: Repository<CommentEntity>);
     create(dto: CreateCommentDto, userId: number): Promise<CommentEntity>;
-    findAll(postId: number): Promise<{
+    findAll(postId: number, userId: number): Promise<{
         post: {
             id: number;
             title: string;

@@ -114,7 +114,7 @@ export const Header: React.FC = () => {
                     <NotificationIcon className={styles.icon}/>
                 </IconButton>
                 {userData ? (
-                    <Link href="/profile/1" className="d-flex align-center">
+                    <Link href={`/profile/${userData.id}`} className="d-flex align-center">
                         {userData.image ? (
                                 <Avatar
                                     className={styles.avatar}
