@@ -31,10 +31,13 @@ let CommentService = class CommentService {
             relations: ['user'], where: { id: comment.id }
         });
     }
-    async findAll(postId) {
+    async findAll(postId, userId) {
         const qb = this.repository.createQueryBuilder('c');
         if (postId) {
             qb.where('c.postId = :postId', { postId });
+        }
+        if (userId) {
+            qb.where('c.userId = :userId', { userId });
         }
         const arr = await qb
             .leftJoinAndSelect('c.post', 'post')

@@ -64,7 +64,7 @@ const Rating: NextPage<RatingPageProps> = ({users}) => {
                     <TableCell component="th" scope="row">
                       <span className="mr-15">{user.id}</span> {user.fullName}
                     </TableCell>
-                    <TableCell align="right">{user.commentsCount * 2}</TableCell>
+                    <TableCell align="right">{user.commentsCount && user.commentsCount * 2}</TableCell>
                     <TableCell align="right">
                       <FollowButton />
                     </TableCell>

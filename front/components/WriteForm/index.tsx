@@ -46,9 +46,7 @@ const WriteForm: React.FC<WriteFormProps> = ({data}) => {
             }
             if (!data) {
                 const post = await Api().post.create(obj);
-                await router.push(`/write/${post.id}`)
-            } else {
-                await Api().post.update(data.id, obj);
+                await router.push(`/`)
             }
         } catch (err) {
             console.warn('Create post ', err);

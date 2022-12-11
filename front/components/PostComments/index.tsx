@@ -13,8 +13,9 @@ import {useComments} from "../../hooks/useComments";
 interface PostCommentsProps {
   postId: number;
   getRef: Function;
+  commentList?: CommentItem[];
 }
-const PostComponent: React.FC<PostCommentsProps> = ({postId, getRef}) => {
+const PostComponent: React.FC<PostCommentsProps> = ({postId, getRef, commentList}) => {
   const userData = useAppSelector(selectUserData)
   const [activeTab, setActiveTab] = useState(0);
   const {comments, setComments} = useComments(postId)

@@ -8,6 +8,7 @@ export declare class CommentController {
     create(createCommentDto: CreateCommentDto, userId: number): Promise<import("./entities/comment.entity").CommentEntity>;
     findAll(query: {
         postId?: string;
+        userId?: string;
     }): Promise<{
         post: {
             id: number;

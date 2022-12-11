@@ -27,8 +27,8 @@ export class CommentController {
   }
 
   @Get()
-  findAll(@Query() query: { postId?: string }) {
-    return this.commentService.findAll(+query.postId);
+  findAll(@Query() query: { postId?: string, userId?: string }) {
+    return this.commentService.findAll(+query.postId, +query.userId);
   }
 
   @Get(':id')

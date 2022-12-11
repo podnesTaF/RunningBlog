@@ -22,8 +22,8 @@ export const FormField: React.FC<FormFieldProps> = ({ name, label, type }) => {
       label={label}
       type={type}
       variant="outlined"
-      error={!!formState.errors[name]?.message}
       helperText={formState.errors[name]?.message}
+      error={!!formState.errors[name]?.message}
       fullWidth
     />
   );

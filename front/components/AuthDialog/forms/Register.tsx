@@ -8,10 +8,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import styles from '../AuthDialog.module.scss';
 import { FormField } from '../../FormField';
-import { UserApi } from '../../../utils/api/user';
 import { setCookie } from 'nookies';
 import { useAppDispatch } from '../../../redux/hooks';
 import { setUserData } from '../../../redux/slices/user';
+import {Api} from "../../../utils/api";
 
 interface LoginFormProps {
   onOpenRegister: () => void;
@@ -33,7 +33,7 @@ const Register: React.FC<LoginFormProps> = ({
 
   const onSubmit = async (dto: any) => {
     try {
-      const data = await UserApi.register(dto);
+      const data = await Api().user.register(dto);
       console.log(data);
       setCookie(null, 'authToken', data.token, {
         maxAge: 30 * 24 * 60 * 60,

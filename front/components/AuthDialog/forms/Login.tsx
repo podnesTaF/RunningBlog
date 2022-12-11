@@ -9,7 +9,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import styles from '../AuthDialog.module.scss';
 import { FormField } from '../../FormField';
 import { LoginUserDto } from '../../../utils/api/types';
-import { UserApi } from '../../../utils/api/user';
 import Alert from '@mui/material/Alert';
 import { setCookie } from 'nookies';
 import { useAppDispatch } from '../../../redux/hooks';
@@ -46,6 +45,7 @@ const Login: React.FC<LoginFormProps> = ({ onOpenRegister }) => {
       }
     }
   };
+
 
   return (
     <div className={styles.formContainer}>

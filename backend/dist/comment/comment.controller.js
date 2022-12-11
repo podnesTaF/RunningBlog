@@ -27,7 +27,7 @@ let CommentController = class CommentController {
         return this.commentService.create(createCommentDto, userId);
     }
     findAll(query) {
-        return this.commentService.findAll(+query.postId);
+        return this.commentService.findAll(+query.postId, +query.userId);
     }
     findOne(id) {
         return this.commentService.findOne(+id);

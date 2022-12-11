@@ -22,11 +22,15 @@ export class CommentService {
       relations: ['user'], where: {id: comment.id} },)
   }
 
-  async findAll(postId: number) {
+  async findAll(postId: number, userId: number) {
     const qb = this.repository.createQueryBuilder('c');
 
     if (postId) {
       qb.where('c.postId = :postId', { postId });
+    }
+
+    if(userId) {
+      qb.where('c.userId = :userId', { userId });
     }
 
     const arr = await qb
