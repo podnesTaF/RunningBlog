@@ -12,7 +12,7 @@ import { LoginUserDto } from '../../../utils/api/types';
 import Alert from '@mui/material/Alert';
 import { setCookie } from 'nookies';
 import { useAppDispatch } from '../../../redux/hooks';
-import { setUserData } from '../../../redux/slices/user';
+import {selectFollows, setMyFollows, setUserData} from '../../../redux/slices/user';
 import { Api } from '../../../utils/api';
 
 interface LoginFormProps {
@@ -36,8 +36,17 @@ const Login: React.FC<LoginFormProps> = ({ onOpenRegister }) => {
         maxAge: 30 * 24 * 60 * 60,
         path: '/',
       });
+
+
+      const follows = await Api().user.getFollows();
+      const myFollows = follows.filter(follow => follow.followerId.id === data.id)
+      const myFollowers = myFollows.map(follow => follow.followingId)
+
+       dispatch(setMyFollows(myFollowers))
+
       setErrorMessage('');
       dispatch(setUserData(data));
+
     } catch (err: any) {
       console.warn('Error by registration', err);
       if (err.response) {

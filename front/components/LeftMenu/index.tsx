@@ -23,7 +23,7 @@ const menu = [
 const LeftMenu: React.FC = () => {
   const router = useRouter();
 
-  console.log(router.asPath);
+
 
   return (
     <div className={styles.menu}>

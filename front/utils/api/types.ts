@@ -48,6 +48,9 @@ export type ResponseUser = {
 
   followingsCount: number;
   followerCount: number;
+
+  likesCount?: number;
+  postsCount?: number;
   token: string;
   updatedAt: string;
 };

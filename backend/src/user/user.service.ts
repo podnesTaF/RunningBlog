@@ -9,6 +9,7 @@ import { SearchUserDto } from './dto/searchg-user.dto';
 import { CommentEntity } from '../comment/entities/comment.entity';
 import {FollowsEntity} from "../follows/entities/follows.entity";
 import {LikeEntity} from "../like/entities/like.entity";
+import {PostEntity} from "../post/entities/post.entity";
 
 @Injectable()
 export class UserService {
@@ -26,6 +27,10 @@ export class UserService {
 
     await qb.leftJoinAndMapMany('u.followers', FollowsEntity, 'following', 'following.followingId = u.id').loadRelationCountAndMap('u.followingsCount', 'u.followings', 'followings').getMany()
 
+    await qb.leftJoinAndMapMany('u.likes', LikeEntity, 'like', 'like.userId = u.id').loadRelationCountAndMap('u.likesCount', 'u.likes', 'likes').getMany()
+
+    await qb.leftJoinAndMapMany('u.posts', PostEntity, 'posts', 'posts.userId = u.id').loadRelationCountAndMap('u.postsCount', 'u.posts', 'posts').getMany()
+
     await qb.leftJoinAndMapMany(
         'u.comments',
         CommentEntity,
@@ -39,6 +44,8 @@ export class UserService {
         .getMany()
 
     return users.map((obj) => {
+      delete obj.posts
+      delete obj.likes
       delete obj.comments
       return obj
     });
@@ -56,7 +63,6 @@ export class UserService {
 
   async update(id: number, dto: UpdateUserDto): Promise<UserEntity> {
     let toUpdate = await this.repository.findOne({where: { id } });
-  console.log(dto)
 
     if (toUpdate.password !== dto.oldPassword) {
       throw new HttpException({

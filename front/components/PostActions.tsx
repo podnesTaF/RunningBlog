@@ -38,7 +38,6 @@ const PostActions: React.FC<PostActionsProps> = ({onLike, ids, onUnlike, likesCo
     const myLikes = me?.likes?.find(like => ids?.includes(like.id))
 
     useEffect(() => {
-        console.log(myLikes?.id)
         if(myLikes?.id) {
             setIsLiked(true)
         } else {
@@ -47,7 +46,6 @@ const PostActions: React.FC<PostActionsProps> = ({onLike, ids, onUnlike, likesCo
     }, [])
 
     const handleLike = () => {
-        console.log(isLiked)
         if(isLiked) {
             onUnlike()
             setIsLiked(false)

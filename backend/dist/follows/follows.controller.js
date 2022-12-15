@@ -32,7 +32,6 @@ let FollowsController = class FollowsController {
         return this.followsService.getFollow(+id);
     }
     unfollow(req, id) {
-        console.log(req.user.id, id);
         return this.followsService.unfollow(+req.user.id, +id);
     }
 };

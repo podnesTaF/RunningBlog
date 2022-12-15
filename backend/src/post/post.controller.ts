@@ -48,8 +48,14 @@ export class PostController {
         @Param('id') id: string,
         @Body() updatePostDto: UpdatePostDto,
     ) {
-        const{image} = files
-        return this.postService.update(image[0], +id, updatePostDto, userId);
+        let image;
+        if(files.image) {
+            image = files.image
+            return this.postService.update(image[0], +id, updatePostDto, userId);
+        } else {
+            return this.postService.update(null, +id, updatePostDto, userId);
+        }
+
     }
 
 

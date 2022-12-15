@@ -20,12 +20,14 @@ export class CommentEntity {
 
   @ManyToOne(() => UserEntity, {
     nullable: false,
+    onDelete:'CASCADE'
   })
   @JoinColumn({ name: 'userId' })
   user: UserEntity;
 
   @ManyToOne(() => PostEntity, {
     nullable: false,
+  onDelete:'CASCADE'
   })
   @JoinColumn({ name: 'postId' })
   post: PostEntity;

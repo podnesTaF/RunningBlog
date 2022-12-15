@@ -20,6 +20,7 @@ const typeorm_2 = require("typeorm");
 const comment_entity_1 = require("../comment/entities/comment.entity");
 const follows_entity_1 = require("../follows/entities/follows.entity");
 const like_entity_1 = require("../like/entities/like.entity");
+const post_entity_1 = require("../post/entities/post.entity");
 let UserService = class UserService {
     constructor(repository) {
         this.repository = repository;
@@ -30,12 +31,16 @@ let UserService = class UserService {
     async findAll() {
         const qb = await this.repository.createQueryBuilder('u');
         await qb.leftJoinAndMapMany('u.followers', follows_entity_1.FollowsEntity, 'following', 'following.followingId = u.id').loadRelationCountAndMap('u.followingsCount', 'u.followings', 'followings').getMany();
+        await qb.leftJoinAndMapMany('u.likes', like_entity_1.LikeEntity, 'like', 'like.userId = u.id').loadRelationCountAndMap('u.likesCount', 'u.likes', 'likes').getMany();
+        await qb.leftJoinAndMapMany('u.posts', post_entity_1.PostEntity, 'posts', 'posts.userId = u.id').loadRelationCountAndMap('u.postsCount', 'u.posts', 'posts').getMany();
         await qb.leftJoinAndMapMany('u.comments', comment_entity_1.CommentEntity, 'comment', 'comment.userId = u.id')
             .loadRelationCountAndMap('u.commentsCount', 'u.comments', 'comments')
             .getMany();
         const users = await qb.leftJoinAndMapMany('u.followings', follows_entity_1.FollowsEntity, 'follower', 'follower.followerId = u.id').loadRelationCountAndMap('u.followerCount', 'u.followers', 'followers')
             .getMany();
         return users.map((obj) => {
+            delete obj.posts;
+            delete obj.likes;
             delete obj.comments;
             return obj;
         });
@@ -50,7 +55,6 @@ let UserService = class UserService {
     }
     async update(id, dto) {
         let toUpdate = await this.repository.findOne({ where: { id } });
-        console.log(dto);
         if (toUpdate.password !== dto.oldPassword) {
             throw new common_1.HttpException({
                 status: common_1.HttpStatus.FORBIDDEN,

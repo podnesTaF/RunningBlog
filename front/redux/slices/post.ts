@@ -7,22 +7,32 @@ import { RootState } from '../store';
 import { HYDRATE } from 'next-redux-wrapper';
 
 export interface PostState {
-    data?: PostItem | null;
+    posts: PostItem[];
 }
 
 const initialState: PostState = {
-    data: null,
+    posts: [],
 };
 
 export const postSlice = createSlice({
     name: 'post',
     initialState,
     reducers: {
-        setPost: (state, action: PayloadAction<PostItem>) => {
-            state.data = action.payload;
+        setPosts: (state, action: PayloadAction<PostItem[]>) => {
+            state.posts = action.payload;
         },
-        deletePost: (state) => {
-            state.data = null
+        deletePost: (state, action: PayloadAction<number>) => {
+            state.posts = state.posts.filter(p => p.id !== action.payload);
+        },
+        updatePost: (state, action: PayloadAction<PostItem>) => {
+            // let postToUpdate = state.posts.find(p => p.id === action.payload.id)
+            state.posts = state.posts.map(p => {
+                if(p.id === action.payload.id) {
+                    return action.payload;
+                }
+                return p;
+                }
+            )
         }
     },
     extraReducers: {
@@ -35,10 +45,13 @@ export const postSlice = createSlice({
     },
 });
 
-export const { setPost } = postSlice.actions;
+export const { setPosts } = postSlice.actions;
 export const {deletePost} = postSlice.actions
+export const {updatePost} = postSlice.actions
 
-// export const selectPost = (state: RootState) => state.post.data;
+
+
+export const selectPosts = (state: RootState) => state.post.posts;
 
 
 export const postReducer = postSlice.reducer;

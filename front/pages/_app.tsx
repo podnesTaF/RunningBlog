@@ -13,8 +13,9 @@ import 'macro-css';
 import { wrapper } from '../redux/store';
 import { parseCookies } from 'nookies';
 import { UserApi } from '../utils/api/user';
-import { setUserData } from '../redux/slices/user';
+import {setMyFollows, setUserData} from '../redux/slices/user';
 import { Api } from '../utils/api';
+import {setPosts} from "../redux/slices/post";
 
 function App({ Component, pageProps }: AppProps) {
   return (
@@ -37,7 +38,14 @@ App.getInitialProps = wrapper.getInitialAppProps(
       try {
         const userData = await Api(ctx).user.getMe();
 
-        store.dispatch(setUserData(userData));
+            store.dispatch(setUserData(userData));
+          const follows = await Api(ctx).user.getFollows();
+          const myFollows = follows.filter(follow => follow.followerId.id === userData.id)
+          const myFollowers = myFollows.map(follow => follow.followingId)
+          store.dispatch(setMyFollows(myFollowers))
+
+          const posts = await Api(ctx).post.getAll()
+          store.dispatch(setPosts(posts))
       } catch (err) {
         if (ctx.asPath === '/write') {
           ctx.res?.writeHead(302, {

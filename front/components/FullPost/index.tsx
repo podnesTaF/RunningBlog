@@ -10,8 +10,8 @@ import styles from './FullPost.module.scss';
 import {ResponseUser} from "../../utils/api/types";
 import Link from "next/link";
 import {Api} from "../../utils/api";
-import {useAppSelector} from "../../redux/hooks";
-import {selectUserData} from "../../redux/slices/user";
+import {useAppDispatch, useAppSelector} from "../../redux/hooks";
+import {addFollow, removeFollow, selectFollows, selectUserData} from "../../redux/slices/user";
 
 interface FullPostProps {
   title: string;
@@ -26,17 +26,17 @@ interface FullPostProps {
 
 export const FullPost: FC<FullPostProps> = ({title, text, image, user, reference, isMe, myFollowers}) => {
 
+  const myFollowings = useAppSelector(selectFollows)
   const userData = useAppSelector(selectUserData);
-  console.log(myFollowers)
+  const dispatch = useAppDispatch()
 
   const [followers, setFollowers] = useState(myFollowers)
-  console.log(followers)
   const [isFollowed, setIsFollowed] = useState(false)
 
   useEffect(() => {
-    if(followers.length > 0) {
-      followers.forEach(user => {
-        if(user.id === userData?.id) {
+    if(myFollowings.length > 0) {
+      myFollowings.forEach(f => {
+        if(f.id === user.id) {
           setIsFollowed(true)
         }
       })
@@ -49,6 +49,7 @@ export const FullPost: FC<FullPostProps> = ({title, text, image, user, reference
     try {
       const data = await Api().user.follow(user.id)
       setFollowers(prev => [...prev, data])
+      dispatch(addFollow(data))
       setIsFollowed(true)
     } catch (err) {
       console.error('follow error', err)
@@ -57,7 +58,7 @@ export const FullPost: FC<FullPostProps> = ({title, text, image, user, reference
   const unfollow = async() => {
     try {
       await Api().user.unfollow(user.id)
-
+      dispatch(removeFollow(user.id))
       setFollowers(prev => prev.filter((f) => f.id !== userData?.id))
       setIsFollowed(false)
     } catch (err) {

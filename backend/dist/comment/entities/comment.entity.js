@@ -26,6 +26,7 @@ __decorate([
 __decorate([
     (0, typeorm_1.ManyToOne)(() => user_entity_1.UserEntity, {
         nullable: false,
+        onDelete: 'CASCADE'
     }),
     (0, typeorm_1.JoinColumn)({ name: 'userId' }),
     __metadata("design:type", user_entity_1.UserEntity)
@@ -33,6 +34,7 @@ __decorate([
 __decorate([
     (0, typeorm_1.ManyToOne)(() => post_entity_1.PostEntity, {
         nullable: false,
+        onDelete: 'CASCADE'
     }),
     (0, typeorm_1.JoinColumn)({ name: 'postId' }),
     __metadata("design:type", post_entity_1.PostEntity)

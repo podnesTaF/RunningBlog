@@ -1,6 +1,6 @@
 /** @format */
 
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import MainLayout from '../layouts/MainLayout';
 import {Container} from "@mui/system";
 import {GetServerSideProps, NextPage} from "next";
@@ -9,15 +9,25 @@ import {PostItem, ResponseUser} from "../utils/api/types";
 import Post from "../components/Post";
 import {Typography} from "@mui/material";
 import {useAppSelector} from "../redux/hooks";
-import {selectUserData} from "../redux/slices/user";
-
+import {selectFollows, selectUserData} from "../redux/slices/user";
+import {selectPosts} from "../redux/slices/post";
+import {Simulate} from "react-dom/test-utils";
+import select = Simulate.select;
 
 interface FollowsPageProps {
     posts?: PostItem[];
-    me: ResponseUser;
 }
-const FollowsPage: NextPage<FollowsPageProps> = ({posts, me}) => {
-    const userData = useAppSelector(selectUserData);
+
+const FollowsPage: NextPage<FollowsPageProps> = () => {
+    const userData = useAppSelector(selectUserData)
+
+    const posts = useAppSelector(selectPosts)
+
+    const followings = useAppSelector(selectFollows)
+
+    const [ids, setIds] = useState(followings.map(f => f.id))
+
+    const [followsPost, setFollowsPost] = useState<PostItem[]>(posts.filter(p => ids.includes(p.userId)))
 
     if(!userData) {
         return (
@@ -32,7 +42,7 @@ const FollowsPage: NextPage<FollowsPageProps> = ({posts, me}) => {
   return (
     <MainLayout>
       <Container >
-          {posts && posts.length !== 0  ? posts.map((post) => (
+          {followsPost && followsPost.length !== 0  ? followsPost.map((post) => (
               <Post
                   key={post.id}
                   id={post.id}
@@ -66,7 +76,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         return {
             props: {
                 posts: followPosts,
-                me
             }
         }
     } catch(err) {

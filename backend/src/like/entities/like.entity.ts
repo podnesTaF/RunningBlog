@@ -9,9 +9,9 @@ export class LikeEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => UserEntity, user => user.likes)
+    @ManyToOne(() => UserEntity, user => user.likes, {onDelete:'CASCADE'})
     user: UserEntity;
 
-    @ManyToOne(() => PostEntity, post => post.likes)
+    @ManyToOne(() => PostEntity, post => post.likes, {onDelete:'CASCADE'})
     post: PostEntity;
 }

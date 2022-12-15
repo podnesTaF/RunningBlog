@@ -29,7 +29,6 @@ export class FollowsController {
     @UseGuards(JwtAuthGuard)
     @Delete(':id')
     unfollow(@Request() req, @Param('id') id: string) {
-        console.log(req.user.id, id)
         return this.followsService.unfollow(+req.user.id ,+id);
     }
 
