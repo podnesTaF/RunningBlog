@@ -32,7 +32,9 @@ const PostComponent: React.FC<PostCommentsProps> = ({postId, getRef, commentList
     <Paper elevation={0} className="mt-40 p-30">
       <div className="container">
         <Typography variant="h6" className="mb-20">
-          42 comments
+          {comments.length === 0 && 'There is no comments yet.'}
+          {comments.length === 1 && `${comments.length} comment`}
+          {comments.length > 1 && `${comments.length} comments`}
         </Typography>
         <Tabs
           onChange={(_, newValue) => setActiveTab(newValue)}

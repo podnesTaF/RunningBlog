@@ -19,6 +19,7 @@ const user_entity_1 = require("./entities/user.entity");
 const typeorm_2 = require("typeorm");
 const comment_entity_1 = require("../comment/entities/comment.entity");
 const follows_entity_1 = require("../follows/entities/follows.entity");
+const like_entity_1 = require("../like/entities/like.entity");
 let UserService = class UserService {
     constructor(repository) {
         this.repository = repository;
@@ -39,14 +40,27 @@ let UserService = class UserService {
             return obj;
         });
     }
-    findById(id) {
-        return this.repository.findOne({ where: { id } });
+    async findById(id) {
+        const qb = this.repository.createQueryBuilder('u');
+        const user = await qb.leftJoinAndMapMany('u.likes', like_entity_1.LikeEntity, 'like', 'like.userId = u.id').where({ id }).getOne();
+        return user;
     }
     findByCond(cond) {
         return this.repository.findOne({ where: Object.assign({}, cond) });
     }
-    update(id, dto) {
-        return this.repository.update(id, dto);
+    async update(id, dto) {
+        let toUpdate = await this.repository.findOne({ where: { id } });
+        console.log(dto);
+        if (toUpdate.password !== dto.oldPassword) {
+            throw new common_1.HttpException({
+                status: common_1.HttpStatus.FORBIDDEN,
+                error: 'the old password is incorrect',
+            }, common_1.HttpStatus.FORBIDDEN);
+        }
+        delete toUpdate.fullName;
+        delete toUpdate.password;
+        let updated = Object.assign(toUpdate, dto);
+        return await this.repository.save(updated);
     }
     async search(dto) {
         const qb = this.repository.createQueryBuilder('u');

@@ -4,10 +4,11 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToMany,
+  OneToMany, BeforeInsert,
 } from 'typeorm';
 import { CommentEntity } from '../../comment/entities/comment.entity';
 import {FollowsEntity} from "../../follows/entities/follows.entity";
+import {LikeEntity} from "../../like/entities/like.entity";
 
 @Entity('users')
 export class UserEntity {
@@ -32,14 +33,18 @@ export class UserEntity {
   comments: CommentEntity[];
 
 
+
   @OneToMany(() => FollowsEntity, follows => follows.following)
   followers: FollowsEntity[];
 
   @OneToMany(() => FollowsEntity, follows => follows.follower)
   followings: FollowsEntity[];
 
+  @OneToMany(() => LikeEntity, like => like.user)
+  likes: LikeEntity[];
+
   @Column({ nullable: true })
-  password?: string;
+  password: string;
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;

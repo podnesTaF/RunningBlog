@@ -1,5 +1,6 @@
 import { CommentEntity } from '../../comment/entities/comment.entity';
 import { FollowsEntity } from "../../follows/entities/follows.entity";
+import { LikeEntity } from "../../like/entities/like.entity";
 export declare class UserEntity {
     id: number;
     fullName: string;
@@ -8,7 +9,8 @@ export declare class UserEntity {
     comments: CommentEntity[];
     followers: FollowsEntity[];
     followings: FollowsEntity[];
-    password?: string;
+    likes: LikeEntity[];
+    password: string;
     createdAt: Date;
     updatedAt: Date;
 }

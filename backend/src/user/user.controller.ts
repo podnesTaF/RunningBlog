@@ -30,8 +30,9 @@ export class UserController {
 
   @UseGuards(JwtAuthGuard)
   @Patch('me')
-  update(@Request() req, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+req.user.id, updateUserDto);
+  update(@Request() req, @Body() body) {
+    const {dto} = body;
+    return this.userService.update(+req.user.id, dto);
   }
 
   @Get('search')

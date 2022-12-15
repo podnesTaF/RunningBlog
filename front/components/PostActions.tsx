@@ -1,13 +1,16 @@
 /** @format */
 
-import React, { CSSProperties } from 'react';
+import React, {CSSProperties, useEffect, useState} from 'react';
 import { IconButton } from '@mui/material';
 import {
   ModeCommentOutlined as CommentsIcon,
-  RepeatOutlined as RepostIcon,
-  BookmarkBorderOutlined as FavoriteIcon,
   ShareOutlined as ShareIcon,
 } from '@mui/icons-material';
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import {useAppSelector} from "../redux/hooks";
+import {selectUserData} from "../redux/slices/user";
+import {pink} from "@mui/material/colors";
 
 const styles: CSSProperties = {
   display: 'flex',
@@ -19,18 +22,59 @@ const styles: CSSProperties = {
   margin: '0',
 };
 
-const PostActions: React.FC = () => {
+
+interface PostActionsProps {
+    onLike: Function;
+    onUnlike: Function;
+    ids?: number[]
+
+    likesCount: number
+}
+const PostActions: React.FC<PostActionsProps> = ({onLike, ids, onUnlike, likesCount}) => {
+    const [isLiked, setIsLiked] = useState(false)
+    const [likeCount, setLikeCount] = useState(likesCount)
+    const userData = useAppSelector(selectUserData)
+    const [me, setMe] = useState(userData)
+    const myLikes = me?.likes?.find(like => ids?.includes(like.id))
+
+    useEffect(() => {
+        console.log(myLikes?.id)
+        if(myLikes?.id) {
+            setIsLiked(true)
+        } else {
+            setIsLiked(false)
+        }
+    }, [])
+
+    const handleLike = () => {
+        console.log(isLiked)
+        if(isLiked) {
+            onUnlike()
+            setIsLiked(false)
+            setLikeCount(prev => prev - 1)
+        } else {
+            setIsLiked(true)
+            onLike()
+            setLikeCount(prev => prev + 1)
+        }
+    }
+
   return (
     <ul style={styles}>
       <li>
-        <IconButton>
-          <CommentsIcon />
-        </IconButton>
+          <IconButton onClick={handleLike}>
+              {!isLiked ? (
+                  <FavoriteBorderIcon />
+              ) : (
+                <FavoriteIcon sx={{ color: pink[500] }} />
+              )}
+          </IconButton>
+          {likeCount} likes
       </li>
       <li>
-        <IconButton>
-          <RepostIcon />
-        </IconButton>
+          <IconButton>
+              <CommentsIcon />
+          </IconButton>
       </li>
       <li>
         <IconButton>

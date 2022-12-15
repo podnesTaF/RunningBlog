@@ -14,6 +14,8 @@ import {resolve} from "path";
 import {CommentModule} from "./comment/comment.module";
 import {FollowsEntity} from "./follows/entities/follows.entity";
 import {FollowsModule} from "./follows/follows.module";
+import { LikeModule } from './like/like.module';
+import { LikeEntity } from './like/entities/like.entity';
 
 @Module({
     imports: [
@@ -24,7 +26,7 @@ import {FollowsModule} from "./follows/follows.module";
             username: 'postgres',
             password: 'podnes1972',
             database: 'postgres',
-            entities: [UserEntity, PostEntity, CommentEntity, FollowsEntity],
+            entities: [UserEntity, PostEntity, CommentEntity, FollowsEntity, LikeEntity],
             synchronize: true,
         }),
         UserModule,
@@ -36,6 +38,7 @@ import {FollowsModule} from "./follows/follows.module";
         FollowsModule,
         AuthModule,
         FileModule,
+        LikeModule,
     ],
     controllers: [AppController],
     providers: [AppService],

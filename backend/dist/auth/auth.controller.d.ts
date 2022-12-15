@@ -12,6 +12,7 @@ export declare class AuthController {
         comments: import("../comment/entities/comment.entity").CommentEntity[];
         followers: import("../follows/entities/follows.entity").FollowsEntity[];
         followings: import("../follows/entities/follows.entity").FollowsEntity[];
+        likes: import("../like/entities/like.entity").LikeEntity[];
         createdAt: Date;
         updatedAt: Date;
     }>;
@@ -25,6 +26,7 @@ export declare class AuthController {
         id: number;
         comments: import("../comment/entities/comment.entity").CommentEntity[];
         followings: import("../follows/entities/follows.entity").FollowsEntity[];
+        likes: import("../like/entities/like.entity").LikeEntity[];
         createdAt: Date;
         updatedAt: Date;
     }>;

@@ -4,13 +4,15 @@ import type { NextPage } from 'next';
 import MainLayout from '../layouts/MainLayout';
 import Post from '../components/Post/index';
 import { Api } from '../utils/api';
-import { PostItem } from '../utils/api/types';
+import {PostItem, ResponseUser} from '../utils/api/types';
+import { useEffect } from 'react';
 
 interface HomeProps {
   posts: PostItem[];
 }
 
-const Home: NextPage<HomeProps> = ({ posts }) => {
+const Home: NextPage<HomeProps> = ({ posts, }) => {
+
   return (
     <MainLayout>
       {posts?.map((post) => (
@@ -21,6 +23,10 @@ const Home: NextPage<HomeProps> = ({ posts }) => {
           image={post.image}
           text={post.text}
           description={post.description}
+          likesCount={+post.likesCount}
+          likes={post.likes}
+          creator={post.user}
+          createdAt={post.createdAt}
         />
       ))}
     </MainLayout>

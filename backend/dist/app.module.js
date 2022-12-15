@@ -23,6 +23,8 @@ const path_1 = require("path");
 const comment_module_1 = require("./comment/comment.module");
 const follows_entity_1 = require("./follows/entities/follows.entity");
 const follows_module_1 = require("./follows/follows.module");
+const like_module_1 = require("./like/like.module");
+const like_entity_1 = require("./like/entities/like.entity");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -35,7 +37,7 @@ AppModule = __decorate([
                 username: 'postgres',
                 password: 'podnes1972',
                 database: 'postgres',
-                entities: [user_entity_1.UserEntity, post_entity_1.PostEntity, comment_entity_1.CommentEntity, follows_entity_1.FollowsEntity],
+                entities: [user_entity_1.UserEntity, post_entity_1.PostEntity, comment_entity_1.CommentEntity, follows_entity_1.FollowsEntity, like_entity_1.LikeEntity],
                 synchronize: true,
             }),
             user_module_1.UserModule,
@@ -47,6 +49,7 @@ AppModule = __decorate([
             follows_module_1.FollowsModule,
             auth_module_1.AuthModule,
             file_module_1.FileModule,
+            like_module_1.LikeModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

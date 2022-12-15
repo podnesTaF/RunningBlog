@@ -3,7 +3,7 @@
 import { Alert, Button, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
-import { RegisterShema } from '../../../utils/validation';
+import { RegisterSchema } from '../../../utils/validation';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import styles from '../AuthDialog.module.scss';
@@ -28,7 +28,7 @@ const Register: React.FC<LoginFormProps> = ({
 
   const form = useForm({
     mode: 'onChange',
-    resolver: yupResolver(RegisterShema),
+    resolver: yupResolver(RegisterSchema),
   });
 
   const onSubmit = async (dto: any) => {

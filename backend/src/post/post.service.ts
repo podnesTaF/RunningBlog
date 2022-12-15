@@ -10,6 +10,9 @@ import { Repository } from 'typeorm';
 import { PostEntity } from './entities/post.entity';
 import { SearchPostDto } from './dto/searchg-post.dto';
 import {FileService, FileType} from "../file/file.service";
+import {LikeEntity} from "../like/entities/like.entity";
+import {LikeService} from "../like/like.service";
+import {UserEntity} from "../user/entities/user.entity";
 
 @Injectable()
 export class PostService {
@@ -19,23 +22,15 @@ export class PostService {
     private fileService: FileService,
   ) {}
 
-  findAll(ids?: number[]) {
+  async findAll(ids?: number[]) {
+    const qb = await this.repository.createQueryBuilder('posts')
+    const posts = await qb.leftJoinAndMapMany('posts.likes', LikeEntity, 'like', 'like.postId = posts.id').loadRelationCountAndMap('posts.likesCount','posts.likes', 'likes').orderBy("posts.createdAt", 'DESC').leftJoinAndMapOne('posts.user', UserEntity, 'user', 'user.id = posts.userId').getMany()
+
     if (!ids) {
-      return this.repository.find({
-        order: {
-          createdAt: 'DESC',
-        },
-      });
+      return posts
     }
-    return this.repository.find({
-      where: ids.map(id => {
-        return {userId: id}
-      }),
-      order: {
-        createdAt: 'DESC',
-      },
-    });
-  }
+    return posts.filter(post => ids.includes(post.userId))
+    }
 
   async popular() {
     const qb = this.repository.createQueryBuilder();
@@ -88,8 +83,8 @@ export class PostService {
   }
 
   async findOne(id: number) {
-    await this.repository
-      .createQueryBuilder('posts')
+    const qb = this.repository.createQueryBuilder('posts')
+    await qb
       .whereInIds(id)
       .update()
       .set({
@@ -97,7 +92,11 @@ export class PostService {
       })
       .execute();
 
-    return this.repository.findOne({ where: { id } });
+    const post = await qb.leftJoinAndMapMany('posts.likes', LikeEntity, 'like', 'like.postId = posts.id').loadRelationCountAndMap('posts.likesCount','posts.likes', 'likes').where({id: id}).getOne()
+
+    console.log(post)
+
+    return post
   }
 
   create(image, dto: CreatePostDto, userId: number) {
@@ -135,6 +134,7 @@ export class PostService {
       text: dto.text,
       image: imagePath,
       tags: dto.tags,
+      userId: userId,
       user: { id: userId },
       description: firstParagraph || '',
     });

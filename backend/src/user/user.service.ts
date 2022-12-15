@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -8,6 +8,7 @@ import { LoginUserDto } from './dto/login-user.dto';
 import { SearchUserDto } from './dto/searchg-user.dto';
 import { CommentEntity } from '../comment/entities/comment.entity';
 import {FollowsEntity} from "../follows/entities/follows.entity";
+import {LikeEntity} from "../like/entities/like.entity";
 
 @Injectable()
 export class UserService {
@@ -43,16 +44,33 @@ export class UserService {
     });
   }
 
-  findById(id: number) {
-    return this.repository.findOne({ where: { id } });
+  async findById(id: number) {
+    const qb = this.repository.createQueryBuilder('u')
+    const user = await qb.leftJoinAndMapMany('u.likes', LikeEntity, 'like', 'like.userId = u.id').where({id}).getOne()
+    return user
   }
 
   findByCond(cond: LoginUserDto) {
     return this.repository.findOne({ where: { ...cond } });
   }
 
-  update(id: number, dto: UpdateUserDto) {
-    return this.repository.update(id, dto);
+  async update(id: number, dto: UpdateUserDto): Promise<UserEntity> {
+    let toUpdate = await this.repository.findOne({where: { id } });
+  console.log(dto)
+
+    if (toUpdate.password !== dto.oldPassword) {
+      throw new HttpException({
+        status: HttpStatus.FORBIDDEN,
+        error: 'the old password is incorrect',
+      }, HttpStatus.FORBIDDEN);
+    }
+
+    delete toUpdate.fullName;
+    delete toUpdate.password;
+    let updated = Object.assign(toUpdate, dto);
+
+
+    return await this.repository.save(updated);
   }
 
   async search(dto: SearchUserDto) {

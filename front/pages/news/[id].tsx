@@ -12,9 +12,13 @@ import {useState} from "react";
 interface FullPostPageProps {
     post: PostItem;
     user: ResponseUser;
+
+    isMe?: boolean;
+
+    myFollowers: ResponseUser[]
 }
 
-const FullPostPage: NextPage<FullPostPageProps> = ({post, user}) => {
+const FullPostPage: NextPage<FullPostPageProps> = ({post, user, myFollowers,  isMe}) => {
 
     const [reference, setRef] = useState()
     const getRef = (ref: any) => {
@@ -23,7 +27,7 @@ const FullPostPage: NextPage<FullPostPageProps> = ({post, user}) => {
 
     return (
         <MainLayout className="mb=50" contentFullWidth>
-            <FullPost reference={reference} title={post.title} text={post.text} image={post.image} user={user} />
+            <FullPost reference={reference} title={post.title} isMe={isMe} myFollowers={myFollowers} text={post.text} image={post.image} user={user} />
             <PostComponent getRef={getRef} postId={post.id} />
         </MainLayout>
     );
@@ -34,14 +38,31 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         const id = ctx?.params?.id || 1
         const post = await Api(ctx).post.getOne(+id);
         const users = await Api(ctx).user.getAll();
-        const user = users.find(user => user.id = post.user.id)
-
-        return {
-            props: {
-                post,
-                user
-            },
-        };
+        const user = users.find(user => user.id === post.userId)
+        const follows = await Api(ctx).user.getFollows();
+        const myFollows = follows.filter(follow => follow.followingId.id === user?.id)
+        const myFollowers = myFollows.map(follow => follow.followerId)
+        let me
+        try {
+            me = await Api(ctx).user.getMe()
+            const isMe = user?.id === me.id
+            return {
+                props: {
+                    post,
+                    user,
+                    isMe,
+                    myFollowers
+                },
+            };
+        } catch(err) {
+            return {
+                props: {
+                    post,
+                    user,
+                    myFollowers
+                },
+            };
+        }
     } catch (err) {
         console.log('Full post page: ' + err);
         return {

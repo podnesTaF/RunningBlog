@@ -1,7 +1,7 @@
 /** @format */
 
 import axios, { AxiosInstance } from 'axios';
-import {CreateUserDto, Follow, LoginUserDto, ResponseUser} from './types';
+import {CreateUserDto, Follow, LoginUserDto, ResponseUser, UpdateUserDto} from './types';
 
 export const UserApi = (instance: AxiosInstance) => ({
   async getAll() {
@@ -29,12 +29,31 @@ export const UserApi = (instance: AxiosInstance) => ({
 
   async getMe() {
     const { data } = await instance.get<ResponseUser>('users/me');
+
     return data;
+  },
+
+  async updateMe(dto: UpdateUserDto) {
+    const {data} = await instance.patch<UpdateUserDto>('users/me', {dto});
+    return data
   },
 
   async getOne(id: number){
     const { data } = await instance.get<ResponseUser>('users/' + id)
     return data
+  },
+
+  // async logout() {
+  //  await instance.post<ResponseUser>('auth/logout')
+  // },
+
+  async follow(id: number) {
+    const {data} = await instance.post('follows', {id})
+    return data
+  },
+
+  async unfollow(id: number) {
+    await instance.delete('follows/' + id)
   },
 
   async getComments(id: number) {

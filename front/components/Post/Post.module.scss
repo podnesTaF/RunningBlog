@@ -4,7 +4,43 @@
   font-size: 22px !important;
 }
 
+.userSection {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 20px;
+
+  img {
+    width: 40px;
+    border-radius: 50%;
+  }
+
+  .data {
+    margin-left: 20px;
+
+    h3 {
+      margin: 0;
+      padding: 0;
+    }
+
+    p {
+      margin: 0;
+      padding: 0;
+    }
+  }
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px;
+  }
+
 .paper {
   border-radius: 8px !important;
   margin-bottom: 30px;
 }
+
+

@@ -90,6 +90,14 @@
   }
 }
 
+.arrow {
+  transform: translateX(-20px);
+}
+
+.menu {
+  transform: translateY(-20px);
+}
+
 .loginButton {
   display: flex;
   align-items: center;
@@ -101,6 +109,7 @@
   svg {
     margin-right: 10px;
   }
+
 
   &:hover {
     color: red;

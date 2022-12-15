@@ -1,10 +1,12 @@
 /** @format */
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import clsx from 'clsx';
 import LeftMenu from '../components/LeftMenu';
 import SideComments from '../components/SideComments';
 import SideStatistic from '../components/SideStatistic';
+import {useAppSelector} from "../redux/hooks";
+import {selectUserData} from "../redux/slices/user";
 
 interface MainLayoutProps {
   hideComments?: boolean;
@@ -21,6 +23,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({
   hideMenu,
   className,
 }) => {
+
+
   return (
     <div className={clsx('wrapper', className)}>
       {!hideMenu && (
