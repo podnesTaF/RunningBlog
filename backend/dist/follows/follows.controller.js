@@ -31,6 +31,10 @@ let FollowsController = class FollowsController {
     getFollow(id) {
         return this.followsService.getFollow(+id);
     }
+    unfollow(req, id) {
+        console.log(req.user.id, id);
+        return this.followsService.unfollow(+req.user.id, +id);
+    }
 };
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
@@ -56,6 +60,15 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], FollowsController.prototype, "getFollow", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, common_1.Delete)(':id'),
+    __param(0, (0, common_1.Request)()),
+    __param(1, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", void 0)
+], FollowsController.prototype, "unfollow", null);
 FollowsController = __decorate([
     (0, common_1.Controller)('follows'),
     __metadata("design:paramtypes", [follows_service_1.FollowsService])

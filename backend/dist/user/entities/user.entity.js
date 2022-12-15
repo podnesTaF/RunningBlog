@@ -13,6 +13,7 @@ exports.UserEntity = void 0;
 const typeorm_1 = require("typeorm");
 const comment_entity_1 = require("../../comment/entities/comment.entity");
 const follows_entity_1 = require("../../follows/entities/follows.entity");
+const like_entity_1 = require("../../like/entities/like.entity");
 let UserEntity = class UserEntity {
 };
 __decorate([
@@ -48,6 +49,10 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => follows_entity_1.FollowsEntity, follows => follows.follower),
     __metadata("design:type", Array)
 ], UserEntity.prototype, "followings", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => like_entity_1.LikeEntity, like => like.user),
+    __metadata("design:type", Array)
+], UserEntity.prototype, "likes", void 0);
 __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)

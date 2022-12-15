@@ -18,27 +18,20 @@ const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const post_entity_1 = require("./entities/post.entity");
 const file_service_1 = require("../file/file.service");
+const like_entity_1 = require("../like/entities/like.entity");
+const user_entity_1 = require("../user/entities/user.entity");
 let PostService = class PostService {
     constructor(repository, fileService) {
         this.repository = repository;
         this.fileService = fileService;
     }
-    findAll(ids) {
+    async findAll(ids) {
+        const qb = await this.repository.createQueryBuilder('posts');
+        const posts = await qb.leftJoinAndMapMany('posts.likes', like_entity_1.LikeEntity, 'like', 'like.postId = posts.id').loadRelationCountAndMap('posts.likesCount', 'posts.likes', 'likes').orderBy("posts.createdAt", 'DESC').leftJoinAndMapOne('posts.user', user_entity_1.UserEntity, 'user', 'user.id = posts.userId').getMany();
         if (!ids) {
-            return this.repository.find({
-                order: {
-                    createdAt: 'DESC',
-                },
-            });
+            return posts;
         }
-        return this.repository.find({
-            where: ids.map(id => {
-                return { userId: id };
-            }),
-            order: {
-                createdAt: 'DESC',
-            },
-        });
+        return posts.filter(post => ids.includes(post.userId));
     }
     async popular() {
         const qb = this.repository.createQueryBuilder();
@@ -77,15 +70,17 @@ let PostService = class PostService {
         return { items, total };
     }
     async findOne(id) {
-        await this.repository
-            .createQueryBuilder('posts')
+        const qb = this.repository.createQueryBuilder('posts');
+        await qb
             .whereInIds(id)
             .update()
             .set({
             views: () => 'views + 1',
         })
             .execute();
-        return this.repository.findOne({ where: { id } });
+        const post = await qb.leftJoinAndMapMany('posts.likes', like_entity_1.LikeEntity, 'like', 'like.postId = posts.id').loadRelationCountAndMap('posts.likesCount', 'posts.likes', 'likes').where({ id: id }).getOne();
+        console.log(post);
+        return post;
     }
     create(image, dto, userId) {
         let imagePath;
@@ -119,6 +114,7 @@ let PostService = class PostService {
             text: dto.text,
             image: imagePath,
             tags: dto.tags,
+            userId: userId,
             user: { id: userId },
             description: firstParagraph || '',
         });

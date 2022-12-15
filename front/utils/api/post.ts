@@ -34,6 +34,14 @@ export const PostApi = (instance: AxiosInstance) => ({
         return data;
     },
 
+    async likePost(postId: number) {
+        await instance.post('/likes', {postId});
+    },
+
+    async unlikePost(postId: number) {
+        await instance.delete('/likes/' + postId );
+    },
+
     async getOne(id: number) {
         const {data} = await instance.get<PostItem>(`/posts/${id}`);
         return data;
@@ -50,6 +58,11 @@ export const PostApi = (instance: AxiosInstance) => ({
             formData
         );
         return data;
+    },
+
+    async delete(id: number) {
+      const {data} = await instance.delete('/posts/' + id);
+      return data
     },
 
     async update(id: number, dto: CreatePostDto) {

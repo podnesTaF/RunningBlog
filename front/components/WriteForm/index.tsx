@@ -17,13 +17,20 @@ const WriteForm: React.FC<WriteFormProps> = ({data}) => {
     const [title, setTitle] = useState(data?.title || '');
     const [text, setText] = useState(data?.text || '');
     const [image, setImage] = useState();
-    const [previewUrl, setPreviewUrl] = useState('')
+    const [oldImageUrl, setImageUrl] = useState(`http://localhost:4000/${data?.image}`)
+    const [previewUrl, setPreviewUrl] = useState('');
     const [isHover, setIsHover] = useState(false)
     const [valid, setValid] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [drag, setDrag] = useState(true)
+    const imageRef = useRef<HTMLImageElement>()
 
     const pickImageRef = useRef<HTMLInputElement>(null)
+
+    useEffect(() => {
+        setPreviewUrl(`http://localhost:4000/${data?.image}`)
+    }, []);
+
 
     useEffect(() => {
         if (!image) return
@@ -32,11 +39,11 @@ const WriteForm: React.FC<WriteFormProps> = ({data}) => {
             // @ts-ignore
             setPreviewUrl(fileReader.result)
         }
-        console.log(image)
         fileReader.readAsDataURL(image)
     }, [image]);
 
     const onAddPost = async () => {
+        console.log(image)
         try {
             setIsLoading(true);
             const obj = {
@@ -46,6 +53,9 @@ const WriteForm: React.FC<WriteFormProps> = ({data}) => {
             }
             if (!data) {
                 const post = await Api().post.create(obj);
+                await router.push(`/`)
+            } else {
+                const post = await Api().post.update(data.id, obj);
                 await router.push(`/`)
             }
         } catch (err) {
@@ -91,6 +101,9 @@ const WriteForm: React.FC<WriteFormProps> = ({data}) => {
     }
 
     const handleDelete = () => {
+        if(oldImageUrl) {
+            setImageUrl('')
+        }
         setPreviewUrl('')
         setImage(undefined)
     }
@@ -133,7 +146,7 @@ const WriteForm: React.FC<WriteFormProps> = ({data}) => {
             </textarea>
             <div className={styles.imageUpload}>
                 <div onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)} className={styles.imageUploadPreview}>
-                    {previewUrl && valid && <img src={previewUrl}  alt='Preview' />}
+                    {oldImageUrl ? <img src={oldImageUrl} alt='Preview' /> : previewUrl && valid && <img src={previewUrl}  alt='Preview' />}
                     {isHover && <div className={styles.deletePreview} onClick={handleDelete}>DELETE</div>}
                 </div>
             </div>

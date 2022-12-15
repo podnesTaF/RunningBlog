@@ -22,6 +22,7 @@ export declare class AuthService {
         comments: import("../comment/entities/comment.entity").CommentEntity[];
         followers: import("../follows/entities/follows.entity").FollowsEntity[];
         followings: import("../follows/entities/follows.entity").FollowsEntity[];
+        likes: import("../like/entities/like.entity").LikeEntity[];
         createdAt: Date;
         updatedAt: Date;
     }>;
@@ -35,6 +36,7 @@ export declare class AuthService {
         id: number;
         comments: import("../comment/entities/comment.entity").CommentEntity[];
         followings: import("../follows/entities/follows.entity").FollowsEntity[];
+        likes: import("../like/entities/like.entity").LikeEntity[];
         createdAt: Date;
         updatedAt: Date;
     }>;

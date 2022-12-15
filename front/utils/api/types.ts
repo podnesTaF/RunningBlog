@@ -13,6 +13,14 @@ export type CreateUserDto = {
   image?: string;
 } & LoginUserDto;
 
+export type UpdateUserDto = {
+  fullName?: string;
+  image?: string;
+  oldPassword?: string;
+
+  password?: string;
+}
+
 export type Follow = {
   id: number;
   followingId: ResponseUser;
@@ -34,6 +42,10 @@ export type ResponseUser = {
     id: number
   }[];
 
+  likes?: {
+    id: number;
+  }[]
+
   followingsCount: number;
   followerCount: number;
   token: string;
@@ -48,9 +60,17 @@ export type PostItem = {
   tags: null | string;
   id: number;
   views: number;
+
+  userId: number;
   user: ResponseUser;
   createdAt: string;
   updatedAt: string;
+  likesCount: string;
+
+  likes: {
+    id: number
+  }[]
+
 };
 
 

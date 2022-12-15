@@ -43,8 +43,13 @@ let FollowsService = class FollowsService {
             follower: { id: dto.followerId },
         });
         const follower = await this.repository.findOne({ relations: ['following'], where: { following: follows.following } });
-        const following = await this.repository.findOne({ relations: ['follower'], where: { follower: follows.following } });
-        return { follower, following };
+        const following = await this.repository.findOne({ relations: ['follower'], where: { follower: follows.follower } });
+        return following.follower;
+    }
+    async unfollow(userId, unfollowId) {
+        const qb = await this.repository.createQueryBuilder('follow');
+        const follow = await qb.where('follow.follower.id = :userId', { userId }).andWhere("follow.following.id = :unfollowId", { unfollowId }).getOne();
+        return this.repository.delete(follow.id);
     }
 };
 FollowsService = __decorate([

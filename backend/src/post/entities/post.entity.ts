@@ -4,9 +4,10 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  ManyToOne,
+  ManyToOne, OneToMany,
 } from 'typeorm';
 import { UserEntity } from '../../user/entities/user.entity';
+import {LikeEntity} from "../../like/entities/like.entity";
 
 @Entity('posts')
 export class PostEntity {
@@ -25,11 +26,15 @@ export class PostEntity {
   @Column()
   description: string;
 
+  @OneToMany(() => LikeEntity, like => like.post)
+  likes: LikeEntity[];
+
   @Column()
   userId: number;
 
   @ManyToOne(() => UserEntity, { eager: true })
   user: UserEntity;
+
 
   @Column({
     default: 0,

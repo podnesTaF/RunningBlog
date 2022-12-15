@@ -18,7 +18,7 @@ export declare class UserService {
     findAll(): Promise<UserEntity[]>;
     findById(id: number): Promise<UserEntity>;
     findByCond(cond: LoginUserDto): Promise<UserEntity>;
-    update(id: number, dto: UpdateUserDto): Promise<import("typeorm").UpdateResult>;
+    update(id: number, dto: UpdateUserDto): Promise<UserEntity>;
     search(dto: SearchUserDto): Promise<{
         items: UserEntity[];
         total: number;

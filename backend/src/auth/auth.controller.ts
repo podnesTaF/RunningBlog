@@ -4,12 +4,13 @@ import {
   UseGuards,
   Request,
   Get,
-  Body, UseInterceptors, UploadedFiles,
+  Body, UseInterceptors, UploadedFiles, Res,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import {FileFieldsInterceptor} from "@nestjs/platform-express";
+import {Response} from 'express'
 
 @Controller('auth')
 export class AuthController {
@@ -32,6 +33,15 @@ export class AuthController {
     } else {
       return this.authService.register(null, dto);
     }
-
   }
+
+  // @UseGuards(LocalAuthGuard)
+  // @Post('logout')
+  // logout(@Res() res: Response, @Body() token: string) {
+  //   // res.clearCookie('token')
+  //   // res.header('Authorization', '')
+  //   return {
+  //     message: 'success'
+  //   }
+  // }
 }

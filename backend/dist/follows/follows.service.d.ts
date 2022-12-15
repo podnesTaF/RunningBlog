@@ -14,8 +14,6 @@ export declare class FollowsService {
         follower: import("../user/entities/user.entity").UserEntity;
         id: number;
     }>;
-    addFollows(dto: CreateFollowsDto): Promise<{
-        follower: FollowsEntity;
-        following: FollowsEntity;
-    }>;
+    addFollows(dto: CreateFollowsDto): Promise<import("../user/entities/user.entity").UserEntity>;
+    unfollow(userId: number, unfollowId: number): Promise<import("typeorm").DeleteResult>;
 }

@@ -13,9 +13,17 @@ export const LoginFormSchema = yup.object().shape({
     .required('password is required'),
 });
 
-export const RegisterShema = yup
+export const RegisterSchema = yup
   .object()
   .shape({
     fullName: yup.string().required('Please provide name'),
   })
   .concat(LoginFormSchema);
+
+export const ChangeUserDataSchema = yup.object().shape({
+    fullName: yup.string().required('Please provide name'),
+    oldPassword: yup.string().required('Please provide old password'),
+    password: yup.string()
+        .min(6, 'Password at least 6 characters')
+        .required('Please provide new password')
+})

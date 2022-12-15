@@ -20,8 +20,7 @@ import {FileFieldsInterceptor} from "@nestjs/platform-express";
 
 @Controller('posts')
 export class PostController {
-    constructor(private readonly postService: PostService) {
-    }
+    constructor(private readonly postService: PostService) {}
 
     @UseGuards(JwtAuthGuard)
     @Post()
