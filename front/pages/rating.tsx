@@ -17,12 +17,16 @@ import FollowButton from '../components/FollowButton';
 import {Api} from "../utils/api";
 import {NextPage} from "next";
 import {ResponseUser} from "../utils/api/types";
+import {calculateRating, sortUsers} from "../utils/rating";
+import {useState} from "react";
 
 interface RatingPageProps {
   users: ResponseUser[];
 }
 
 const Rating: NextPage<RatingPageProps> = ({users}) => {
+  const [sortedUsers, setSortedUsers] = useState(users.sort(sortUsers))
+
   return (
       <MainLayout>
         <Paper className="p;-20 pt-20 pr-20 mb-20" elevation={0}>
@@ -59,12 +63,12 @@ const Rating: NextPage<RatingPageProps> = ({users}) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {users.map((user) => (
+              {sortedUsers.map((user) => (
                   <TableRow key={user.id}>
                     <TableCell component="th" scope="row">
                       <span className="mr-15">{user.id}</span> {user.fullName}
                     </TableCell>
-                    <TableCell align="right">{user.commentsCount && user.commentsCount * 2}</TableCell>
+                    <TableCell align="right">{calculateRating(user.followerCount, user?.commentsCount, user?.postsCount, user?.likesCount)}</TableCell>
                     <TableCell align="right">
                       <FollowButton />
                     </TableCell>

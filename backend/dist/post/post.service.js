@@ -20,6 +20,8 @@ const post_entity_1 = require("./entities/post.entity");
 const file_service_1 = require("../file/file.service");
 const like_entity_1 = require("../like/entities/like.entity");
 const user_entity_1 = require("../user/entities/user.entity");
+const path = require("path");
+const fs = require("fs");
 let PostService = class PostService {
     constructor(repository, fileService) {
         this.repository = repository;
@@ -79,7 +81,6 @@ let PostService = class PostService {
         })
             .execute();
         const post = await qb.leftJoinAndMapMany('posts.likes', like_entity_1.LikeEntity, 'like', 'like.postId = posts.id').loadRelationCountAndMap('posts.likesCount', 'posts.likes', 'likes').where({ id: id }).getOne();
-        console.log(post);
         return post;
     }
     create(image, dto, userId) {
@@ -104,7 +105,7 @@ let PostService = class PostService {
     async update(image, id, dto, userId) {
         var _a;
         const find = await this.repository.findOne({ where: { id: +id } });
-        const imagePath = this.fileService.createFile(file_service_1.FileType.IMAGE, image);
+        const imagePath = image && this.fileService.createFile(file_service_1.FileType.IMAGE, image);
         if (!find) {
             throw new common_1.NotFoundException('Article not found');
         }
@@ -112,7 +113,7 @@ let PostService = class PostService {
         return this.repository.update(id, {
             title: dto.title,
             text: dto.text,
-            image: imagePath,
+            image: imagePath || find.image,
             tags: dto.tags,
             userId: userId,
             user: { id: userId },
@@ -121,6 +122,10 @@ let PostService = class PostService {
     }
     async remove(id, userId) {
         const find = await this.repository.findOne({ where: { id: +id } });
+        if (find.image) {
+            const filePath = path.resolve(__dirname, '..', 'static', find.image);
+            fs.unlinkSync(filePath);
+        }
         if (!find) {
             throw new common_1.NotFoundException('Article not found');
         }

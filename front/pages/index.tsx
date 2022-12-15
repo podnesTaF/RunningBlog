@@ -5,17 +5,36 @@ import MainLayout from '../layouts/MainLayout';
 import Post from '../components/Post/index';
 import { Api } from '../utils/api';
 import {PostItem, ResponseUser} from '../utils/api/types';
-import { useEffect } from 'react';
+import {useEffect, useState} from 'react';
+import {useAppDispatch, useAppSelector} from "../redux/hooks";
+import {selectFollows, selectUserData} from "../redux/slices/user";
+import {Simulate} from "react-dom/test-utils";
+import select = Simulate.select;
+import {selectPosts, setPosts} from "../redux/slices/post";
 
 interface HomeProps {
   posts: PostItem[];
 }
 
-const Home: NextPage<HomeProps> = ({ posts, }) => {
+const Home: NextPage<HomeProps> = () => {
+  const  posts  = useAppSelector(selectPosts)
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const posts = await Api().post.getAll()
+        dispatch(setPosts(posts))
+      } catch (err) {
+        console.log(err)
+      }
+
+    })()
+  }, [])
 
   return (
     <MainLayout>
-      {posts?.map((post) => (
+      {posts.map((post) => (
         <Post
           key={post.id}
           id={post.id}

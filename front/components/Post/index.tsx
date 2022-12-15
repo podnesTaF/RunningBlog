@@ -14,8 +14,9 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import axios from "axios";
 import {ResponseUser} from "../../utils/api/types";
 import {humanReadable} from "../../utils/time";
-import {useAppSelector} from "../../redux/hooks";
+import {useAppDispatch, useAppSelector} from "../../redux/hooks";
 import {selectUserData} from "../../redux/slices/user";
+import {deletePost} from "../../redux/slices/post";
 
 interface PostProps {
   title: string;
@@ -24,7 +25,7 @@ interface PostProps {
   image?: string;
   description: string;
   isMe?: boolean;
-  setPosts?: Function;
+  // setPosts?: Function;
   likesCount: number;
   likes: {
       id: number;
@@ -33,9 +34,11 @@ interface PostProps {
     creator?: ResponseUser;
 
     createdAt?: string;
+
+    handleDelete: Function
 }
 
-const Post: React.FC<PostProps> = ({ id, title, text, image, isMe, setPosts, likesCount, likes, creator, createdAt}) => {
+const Post: React.FC<PostProps> = ({ id, title, text, image, isMe, likesCount, likes, creator, createdAt, handleDelete}) => {
 
     const userData = useAppSelector(selectUserData);
     const router = useRouter()
@@ -49,17 +52,6 @@ const Post: React.FC<PostProps> = ({ id, title, text, image, isMe, setPosts, lik
     const handleClose = () => {
         setAnchorEl(null);
     };
-
-    const handleDelete = async() => {
-        try {
-           if(setPosts && isMe) {
-               await Api().post.delete(id)
-               setPosts(id)
-           }
-        } catch (err: any) {
-            console.log(err.message)
-        }
-    }
 
     const handleUpdate = () => {
         return router.push('/write/' + id)
@@ -112,7 +104,7 @@ const Post: React.FC<PostProps> = ({ id, title, text, image, isMe, setPosts, lik
                       onClose={handleClose}
                       keepMounted
                   >
-                      <MenuItem onClick={handleDelete}>Delete</MenuItem>
+                      <MenuItem onClick={() => handleDelete(id)}>Delete</MenuItem>
                       <MenuItem onClick={handleUpdate}>Edit</MenuItem>
                   </Menu>
               </>

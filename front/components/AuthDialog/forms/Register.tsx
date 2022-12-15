@@ -34,7 +34,6 @@ const Register: React.FC<LoginFormProps> = ({
   const onSubmit = async (dto: any) => {
     try {
       const data = await Api().user.register(dto);
-      console.log(data);
       setCookie(null, 'authToken', data.token, {
         maxAge: 30 * 24 * 60 * 60,
         path: '/',

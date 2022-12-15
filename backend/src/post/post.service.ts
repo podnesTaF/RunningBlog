@@ -1,7 +1,7 @@
 import {
   ForbiddenException,
   Injectable,
-  NotFoundException, UploadedFile,
+  NotFoundException,
 } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
@@ -11,8 +11,9 @@ import { PostEntity } from './entities/post.entity';
 import { SearchPostDto } from './dto/searchg-post.dto';
 import {FileService, FileType} from "../file/file.service";
 import {LikeEntity} from "../like/entities/like.entity";
-import {LikeService} from "../like/like.service";
 import {UserEntity} from "../user/entities/user.entity";
+import * as path from 'path'
+import * as fs from 'fs'
 
 @Injectable()
 export class PostService {
@@ -94,8 +95,6 @@ export class PostService {
 
     const post = await qb.leftJoinAndMapMany('posts.likes', LikeEntity, 'like', 'like.postId = posts.id').loadRelationCountAndMap('posts.likesCount','posts.likes', 'likes').where({id: id}).getOne()
 
-    console.log(post)
-
     return post
   }
 
@@ -119,29 +118,35 @@ export class PostService {
     });
   }
 
-  async update(image, id: number, dto: UpdatePostDto, userId: number) {
+  async update(image: null | File, id: number, dto: UpdatePostDto, userId: number) {
     const find = await this.repository.findOne({ where: { id: +id } });
 
-    const imagePath = this.fileService.createFile(FileType.IMAGE, image)
+    const imagePath = image && this.fileService.createFile(FileType.IMAGE, image)
 
     if (!find) {
       throw new NotFoundException('Article not found');
     }
 
     const firstParagraph = dto.text?.slice(0, 20);
-    return this.repository.update(id, {
-      title: dto.title,
-      text: dto.text,
-      image: imagePath,
-      tags: dto.tags,
-      userId: userId,
-      user: { id: userId },
-      description: firstParagraph || '',
-    });
+     return this.repository.update(id, {
+       title: dto.title,
+       text: dto.text,
+       image: imagePath || find.image,
+       tags: dto.tags,
+       userId: userId,
+       user: { id: userId },
+       description: firstParagraph || '',
+     });
   }
 
   async remove(id: number, userId: number) {
     const find = await this.repository.findOne({ where: { id: +id } });
+
+    if(find.image) {
+      const filePath = path.resolve(__dirname, '..', 'static', find.image)
+      fs.unlinkSync(filePath)
+    }
+
 
     if (!find) {
       throw new NotFoundException('Article not found');
@@ -151,6 +156,6 @@ export class PostService {
       throw new ForbiddenException('No admission for this article');
     }
 
-    return this.repository.delete(id);
+    return this.repository.delete(id)
   }
 }

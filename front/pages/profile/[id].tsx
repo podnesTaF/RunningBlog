@@ -15,31 +15,45 @@ import {CommentItem, PostItem, ResponseUser} from "../../utils/api/types";
 import PostComponent from "../../components/PostComments";
 import Comment from "../../components/Comment";
 import React, {useEffect, useState} from "react";
+import {useAppDispatch, useAppSelector} from "../../redux/hooks";
+import {addFollow, removeFollow, selectFollows, selectUserData} from "../../redux/slices/user";
+import {deletePost, selectPosts} from "../../redux/slices/post";
 
 
 interface ProfilePageProps {
     comments?: CommentItem[];
     user: ResponseUser;
     myFollowers: ResponseUser[];
-    postItems: PostItem[]
-    isMe: boolean;
-    me: ResponseUser;
+
+    posts: PostItem [];
 }
 
-const ProfilePage: NextPage<ProfilePageProps> = ({comments, user, myFollowers, postItems, isMe, me}) => {
+const ProfilePage: NextPage<ProfilePageProps> = ({comments, user, myFollowers  }) => {
 
-    const [posts, setPosts] = useState(postItems)
+    const myFollowings = useAppSelector(selectFollows)
+
+    const userData = useAppSelector(selectUserData)
+
+    const posts = useAppSelector(selectPosts)
+
+    const dispatch = useAppDispatch()
+
+    const isMe = userData?.id === user.id
+
+    const [userPosts, setUserPosts] = useState(posts.filter(p => p.userId === user.id))
 
     const [active, setActive] = useState(0)
+
     const [followers, setFollowers] = useState(myFollowers)
+
 
     const [isFollowed, setIsFollowed] = useState(false)
 
     useEffect(() => {
 
-        if (followers.length > 0) {
-            followers.forEach(user => {
-                if (user.id === me.id) {
+        if (myFollowings.length > 0) {
+            myFollowings.forEach(f => {
+                if (f.id === user.id) {
                     setIsFollowed(true)
                 }
             })
@@ -48,13 +62,22 @@ const ProfilePage: NextPage<ProfilePageProps> = ({comments, user, myFollowers, p
         }
     }, [])
 
-    const handlePosts = (id: number) => {
-        setPosts(prev => prev.filter(p => p.id !== id))
+    const handleDelete = async(id: number) => {
+        try {
+            if(isMe) {
+                await Api().post.delete(id)
+                dispatch(deletePost(id))
+                setUserPosts(prev => prev.filter(p => p.id !== id))
+            }
+        } catch (err: any) {
+            console.log(err.message)
+        }
     }
 
     const follow = async () => {
         try {
             const data = await Api().user.follow(user.id)
+            dispatch(addFollow(data))
             setFollowers(prev => [...prev, data])
             setIsFollowed(true)
         } catch (err) {
@@ -65,7 +88,8 @@ const ProfilePage: NextPage<ProfilePageProps> = ({comments, user, myFollowers, p
     const unfollow = async () => {
         try {
             await Api().user.unfollow(user.id)
-            setFollowers(prev => prev.filter(f => f.id !== me.id))
+            dispatch(removeFollow(user.id))
+            setFollowers(prev => prev.filter(f => f.id !== userData?.id))
             setIsFollowed(false)
         } catch (err) {
             console.log('unfollow error', err)
@@ -144,7 +168,7 @@ const ProfilePage: NextPage<ProfilePageProps> = ({comments, user, myFollowers, p
                             currUserId={user.id}
                         />
                     ))}
-                    {active === 0 && posts && posts.length !== 0 && posts.map((post) => (
+                    {active === 0 && userPosts && userPosts.length !== 0 && userPosts.map((post) => (
                             <Post
                                 key={post.id}
                                 id={post.id}
@@ -155,7 +179,7 @@ const ProfilePage: NextPage<ProfilePageProps> = ({comments, user, myFollowers, p
                                 isMe={isMe}
                                 likesCount={+post.likesCount}
                                 likes={post.likes}
-                                setPosts={handlePosts}
+                                handleDelete={handleDelete}
                             />
                         )) }
                     {active === 0 || !posts || posts.length === 0  && <Typography fontSize='x-large'>The user has no posts</Typography>}
@@ -179,30 +203,21 @@ const ProfilePage: NextPage<ProfilePageProps> = ({comments, user, myFollowers, p
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
     try {
-        const me = await Api(ctx).user.getMe()
         const id = ctx?.params?.id || 1;
-        let isMe: boolean = false;
-        if (me.id === +id) {
-            isMe = true;
-        }
         const users = await Api(ctx).user.getAll()
-
         const user = users.filter(user => user.id === +id)[0]
         const comments = await Api(ctx).user.getComments(+id)
         const follows = await Api(ctx).user.getFollows();
         const myFollows = follows.filter(follow => follow.followingId.id === +id)
         const myFollowers = myFollows.map(follow => follow.followerId)
-        const posts = await Api(ctx).post.getAll()
 
-        const userPosts = posts.filter(post => post.userId === +id)
+        const posts = await Api(ctx).post.getAll()
         return {
             props: {
-                me,
-                isMe,
                 user,
                 comments,
                 myFollowers,
-                postItems: userPosts
+                posts
             },
         }
     } catch (err) {

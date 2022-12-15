@@ -29,6 +29,6 @@ export declare class PostService {
         };
         description: string;
     } & PostEntity>;
-    update(image: any, id: number, dto: UpdatePostDto, userId: number): Promise<import("typeorm").UpdateResult>;
+    update(image: null | File, id: number, dto: UpdatePostDto, userId: number): Promise<import("typeorm").UpdateResult>;
     remove(id: number, userId: number): Promise<import("typeorm").DeleteResult>;
 }

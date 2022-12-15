@@ -9,6 +9,7 @@ import {
 import { CommentEntity } from '../../comment/entities/comment.entity';
 import {FollowsEntity} from "../../follows/entities/follows.entity";
 import {LikeEntity} from "../../like/entities/like.entity";
+import {PostEntity} from "../../post/entities/post.entity";
 
 @Entity('users')
 export class UserEntity {
@@ -42,6 +43,9 @@ export class UserEntity {
 
   @OneToMany(() => LikeEntity, like => like.user)
   likes: LikeEntity[];
+
+  @OneToMany(() => PostEntity, post => post.user)
+  posts: PostEntity[];
 
   @Column({ nullable: true })
   password: string;

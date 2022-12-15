@@ -9,6 +9,7 @@ export function makeStore() {
   return configureStore({
     reducer: {
       user: userReducer,
+      post: postReducer
     },
   });
 }

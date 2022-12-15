@@ -17,13 +17,12 @@ const WriteForm: React.FC<WriteFormProps> = ({data}) => {
     const [title, setTitle] = useState(data?.title || '');
     const [text, setText] = useState(data?.text || '');
     const [image, setImage] = useState();
-    const [oldImageUrl, setImageUrl] = useState(`http://localhost:4000/${data?.image}`)
+    const [oldImageUrl, setImageUrl] = useState(data?.image ? `http://localhost:4000/${data?.image}` : '')
     const [previewUrl, setPreviewUrl] = useState('');
     const [isHover, setIsHover] = useState(false)
     const [valid, setValid] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [drag, setDrag] = useState(true)
-    const imageRef = useRef<HTMLImageElement>()
 
     const pickImageRef = useRef<HTMLInputElement>(null)
 

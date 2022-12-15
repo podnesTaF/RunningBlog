@@ -20,11 +20,11 @@ __decorate([
     __metadata("design:type", Number)
 ], LikeEntity.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => user_entity_1.UserEntity, user => user.likes),
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.UserEntity, user => user.likes, { onDelete: 'CASCADE' }),
     __metadata("design:type", user_entity_1.UserEntity)
 ], LikeEntity.prototype, "user", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => post_entity_1.PostEntity, post => post.likes),
+    (0, typeorm_1.ManyToOne)(() => post_entity_1.PostEntity, post => post.likes, { onDelete: 'CASCADE' }),
     __metadata("design:type", post_entity_1.PostEntity)
 ], LikeEntity.prototype, "post", void 0);
 LikeEntity = __decorate([

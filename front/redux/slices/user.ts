@@ -50,9 +50,13 @@ export const userSlice = createSlice({
 export const { setUserData } = userSlice.actions;
 export const {deleteUserData} = userSlice.actions
 
+export const {setMyFollows} = userSlice.actions
 
+export const {addFollow} = userSlice.actions
 
+export const {removeFollow} = userSlice.actions
 export const selectUserData = (state: RootState) => state.user.data;
+export const selectFollows = (state: RootState) => state.user.follows;
 
 
 
