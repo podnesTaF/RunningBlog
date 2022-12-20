@@ -1,0 +1,18 @@
+.userData {
+  display: flex;
+  flex-direction: row;
+  width: 30%;
+  align-items: center;
+}
+
+.content {
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  span {
+    opacity: 0.6;
+  }
+  h3 {
+    line-height: 1;
+  }
+}

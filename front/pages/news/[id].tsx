@@ -26,7 +26,7 @@ const FullPostPage: NextPage<FullPostPageProps> = ({post, user, myFollowers,  is
     }
 
     return (
-        <MainLayout className="mb=50" contentFullWidth>
+        <MainLayout className="mb=50" contentFullWidth hideComments={true}>
             <FullPost reference={reference} title={post.title} isMe={isMe} myFollowers={myFollowers} text={post.text} image={post.image} user={user} />
             <PostComponent getRef={getRef} postId={post.id} />
         </MainLayout>

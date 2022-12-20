@@ -16,6 +16,18 @@ class CreatePostDto {
 __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
+], CreatePostDto.prototype, "type", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreatePostDto.prototype, "distance", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreatePostDto.prototype, "duration", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
 ], CreatePostDto.prototype, "title", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),

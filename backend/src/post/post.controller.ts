@@ -46,8 +46,9 @@ export class PostController {
         @UploadedFiles() files,
         @User() userId: number,
         @Param('id') id: string,
-        @Body() updatePostDto: UpdatePostDto,
+        @Body() updatePostDto: CreatePostDto,
     ) {
+        console.log(updatePostDto)
         let image;
         if(files.image) {
             image = files.image

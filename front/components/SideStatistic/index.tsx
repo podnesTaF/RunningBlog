@@ -5,8 +5,15 @@ import React, { useState } from 'react';
 import styles from './SideStatistic.module.scss';
 import ArrowRightIcon from '@mui/icons-material/NavigateNextOutlined';
 import Link from 'next/link';
+import {selectUserData} from "../../redux/slices/user";
+import {useAppSelector} from "../../redux/hooks";
+import {Avatar, Divider} from "@mui/material";
+import {humanReadable} from "../../utils/time";
+import {activityRating} from "../../utils/rating";
+import {deepOrange} from "@mui/material/colors";
 
 const SideStatistic = () => {
+    const userData = useAppSelector(selectUserData)
   const [visible, setVisible] = useState(true);
 
   const toggleVisible = () => {
@@ -14,35 +21,62 @@ const SideStatistic = () => {
   };
 
   return (
-    <div className={clsx(styles.root, !visible ? styles.rotated : '')}>
-      <h3 onClick={toggleVisible}>
-        Last runnings <ArrowRightIcon />
-      </h3>
-      {visible && (
         <div className={styles.statItem}>
-          <hr />
           <div className={styles.userInfo}>
-            <img
-              src="https://cdn-icons-png.flaticon.com/512/147/147142.png"
-              alt="avatar"
-            />
-            <Link href={`/profile/1}`}>
-              <b>Oleksii</b>
-            </Link>
+              {userData?.image ? (
+                  <img
+                      src={`http://localhost:4000/${userData?.image}`}
+                      alt="avatar"
+                  />
+              ):(
+                  <Avatar sx={{ bgcolor: deepOrange[500], height: 70, width: 70 }}>
+                      {userData?.fullName[0].toUpperCase()}
+                  </Avatar>
+              )}
           </div>
           <div className={styles.content}>
-            <h4>distance: 19.99km</h4>
-            <small>pace: 4.40</small>
-            <small>time: 1.33:45</small>
-            <p>Great fillings!</p>
+              <Link className={styles.title} href={`/profile/${userData?.id}`}>
+                  <h3>{userData?.fullName}</h3>
+              </Link>
+              <div className={styles.userStats}>
+                 <div>
+                     <small>Followings</small>
+                     <p>{userData?.followingsCount}</p>
+                 </div>
+                  <div>
+                      <small>Followers</small>
+                      <p>{userData?.followerCount}</p>
+                  </div>
+                  <div>
+                      <small>Rating</small>
+                      <p>{activityRating(userData?.runningDistance, userData?.cycleDistance)}</p>
+                  </div>
+              </div>
+              <Divider/>
+            <div className={styles.lastAct}>
+                <p>Latest Activity</p>
+                {userData?.lastActivity?.id ? (
+                    <Link href={`/news/${userData?.lastActivity?.id}`}>
+                        <h4>{userData?.lastActivity.title} | <small>{humanReadable(userData?.lastActivity.createdAt)?.slice(0, 17)}</small></h4>
+                    </Link>
+                    ) : (
+                        <p>
+                        You don't have any activity yet
+                    </p>
+                    )}
+            </div>
+            <div className={styles.activityWrap}>
+                <div className={styles.activity}>
+                    <p>Running</p>
+                    <h4>{userData?.runningDistance} km</h4>
+                </div>
+                <div className={styles.activity}>
+                    <p>Cycling</p>
+                    <h4>{userData?.cycleDistance} km</h4>
+                </div>
+            </div>
           </div>
-          <Link href={`/news/1`}>
-            <span className={styles.postTitle}>Morning run</span>
-          </Link>
-          <hr />
         </div>
-      )}
-    </div>
   );
 };
 

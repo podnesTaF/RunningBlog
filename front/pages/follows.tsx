@@ -13,6 +13,7 @@ import {selectFollows, selectUserData} from "../redux/slices/user";
 import {selectPosts} from "../redux/slices/post";
 import {Simulate} from "react-dom/test-utils";
 import select = Simulate.select;
+import SideStatistic from "../components/SideStatistic";
 
 interface FollowsPageProps {
     posts?: PostItem[];
@@ -45,6 +46,9 @@ const FollowsPage: NextPage<FollowsPageProps> = () => {
           {followsPost && followsPost.length !== 0  ? followsPost.map((post) => (
               <Post
                   key={post.id}
+                  type={post.type}
+                  duration={post.duration}
+                  distance={post.distance}
                   id={post.id}
                   title={post.title}
                   image={post.image}

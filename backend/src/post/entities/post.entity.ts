@@ -15,6 +15,15 @@ export class PostEntity {
   id: number;
 
   @Column()
+  type: 'running' | 'cycle';
+
+  @Column()
+  distance: number;
+
+  @Column()
+  duration: number;
+
+  @Column()
   title: string;
 
   @Column()

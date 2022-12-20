@@ -9,9 +9,15 @@ export const calculateRating = (followers?: number, comments?: number, posts?: n
     return ratingFollowers + ratingComments + ratingPosts + likesRate
 }
 
-export const sortUsers = (a: ResponseUser, b: ResponseUser) => {
-    const first = calculateRating(a.followerCount, a.commentsCount, a.postsCount, a.likesCount)
-    const second = calculateRating(b.followerCount, b.commentsCount, b.postsCount, b.likesCount)
-
-    return second - first
+export const activityRating = (runningDis?: number, cyclingDis?: number) => {
+    const runRate = runningDis && runningDis * 3 || 0
+    return runRate + (cyclingDis || 0)
 }
+
+export const sortSocial = (a: ResponseUser, b: ResponseUser) => {
+    return calculateRating(b.followerCount, b.commentsCount, b.postsCount, b.likesCount) - calculateRating(a.followerCount, a.commentsCount, a.postsCount, a.likesCount)
+}
+
+export const sortSport = (a: ResponseUser, b: ResponseUser) => {
+    return activityRating(a.runningDistance, a.cycleDistance) - activityRating(b.runningDistance, b.cycleDistance)
+ }

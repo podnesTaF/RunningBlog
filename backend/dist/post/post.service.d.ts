@@ -19,6 +19,9 @@ export declare class PostService {
     }>;
     findOne(id: number): Promise<PostEntity>;
     create(image: any, dto: CreatePostDto, userId: number): Promise<{
+        type: "running" | "cycle";
+        distance: number;
+        duration: number;
         title: string;
         text: string;
         image: any;

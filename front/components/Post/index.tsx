@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import {Avatar, IconButton, Menu, MenuItem, Paper, Typography} from '@mui/material';
+import {Avatar, Divider, IconButton, Menu, MenuItem, Paper, Typography} from '@mui/material';
 import Image from 'next/image';
 
 import styles from './Post.module.scss';
@@ -10,16 +10,20 @@ import PostActions from '../PostActions';
 import MoreIcon from "@mui/icons-material/MoreHorizOutlined";
 import {useRouter} from "next/router";
 import {Api} from "../../utils/api";
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import axios from "axios";
+import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
+import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
 import {ResponseUser} from "../../utils/api/types";
-import {humanReadable} from "../../utils/time";
+import {countPace, getHr, getMin, getSec, humanReadable} from "../../utils/time";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
 import {selectUserData} from "../../redux/slices/user";
 import {deletePost} from "../../redux/slices/post";
+import RunInfo from "../RunInfo";
 
 interface PostProps {
   title: string;
+  type: 'running' | 'cycle';
+  duration: string;
+  distance: string;
   id: number;
   text: string;
   image?: string;
@@ -35,10 +39,10 @@ interface PostProps {
 
     createdAt?: string;
 
-    handleDelete: Function
+    handleDelete?: Function;
 }
 
-const Post: React.FC<PostProps> = ({ id, title, text, image, isMe, likesCount, likes, creator, createdAt, handleDelete}) => {
+const Post: React.FC<PostProps> = ({ id, title, text, image, isMe, likesCount, likes, creator, createdAt, handleDelete, duration, distance, type}) => {
 
     const userData = useAppSelector(selectUserData);
     const router = useRouter()
@@ -88,31 +92,40 @@ const Post: React.FC<PostProps> = ({ id, title, text, image, isMe, likesCount, l
                 {createdAt &&  <p>{humanReadable(createdAt)}</p>}
             </div>
         </div>}
-      <div className={styles.header}>
-          <Typography variant="h5" className={styles.title}>
-              <Link href={`/news/${id}`}>{title}</Link>
-          </Typography>
-          {isMe &&
-              <>
-                  <IconButton onClick={handleClick}>
-                      <MoreIcon fontSize='large'/>
-                  </IconButton>
-                  <Menu
-                      anchorEl={anchorEl}
-                      elevation={2}
-                      open={Boolean(anchorEl)}
-                      onClose={handleClose}
-                      keepMounted
-                  >
-                      <MenuItem onClick={() => handleDelete(id)}>Delete</MenuItem>
-                      <MenuItem onClick={handleUpdate}>Edit</MenuItem>
-                  </Menu>
-              </>
-          }
-      </div>
+        <div className={styles.header}>
+            <Typography variant="h5" className={styles.titleWrapper}>
+                {type === 'running' ? <DirectionsRunIcon fontSize='large' /> : <DirectionsBikeIcon fontSize='large' />}
+                <Link href={`/news/${id}`} className={styles.title}>{title}</Link>
+
+            </Typography>
+            {isMe && handleDelete &&
+                <>
+                    <IconButton onClick={handleClick}>
+                        <MoreIcon fontSize='large'/>
+                    </IconButton>
+                    <Menu
+                        anchorEl={anchorEl}
+                        elevation={2}
+                        open={Boolean(anchorEl)}
+                        onClose={handleClose}
+                        keepMounted
+                    >
+                        <MenuItem onClick={() => handleDelete(id)}>Delete</MenuItem>
+                        <MenuItem onClick={handleUpdate}>Edit</MenuItem>
+                    </Menu>
+                </>
+            }
+        </div>
+
+        <Divider />
+            <RunInfo duration={duration} distance={distance} />
+        <Divider />
       <Typography className="mt-10 mb-15">{text}</Typography>
       {image && (
-        <Image src={`http://localhost:4000/${image}`} height={500} width={600} alt={'loo'} />
+        <Image style={{marginLeft: 'auto', width: '100%', objectFit:'cover'}}
+               width={500}
+               height={500}
+               src={`http://localhost:4000/${image}`} alt={'loo'} />
       )}
         {userData && <PostActions onLike={onLike} onUnlike={onUnlike} ids={likeIds} likesCount={likesCount}  />}
     </Paper>

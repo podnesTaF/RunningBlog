@@ -10,7 +10,7 @@ interface FormFieldProps {
   type: string;
 }
 
-export const FormField: React.FC<FormFieldProps> = ({ name, label, type }) => {
+export const FormField: React.FC<FormFieldProps> = ({ name, label, type}) => {
   const { register, formState } = useFormContext();
 
   return (
@@ -21,9 +21,8 @@ export const FormField: React.FC<FormFieldProps> = ({ name, label, type }) => {
       size="small"
       label={label}
       type={type}
-      variant="outlined"
-      helperText={formState.errors[name]?.message}
       error={!!formState.errors[name]?.message}
+      helperText={formState.errors[name]?.message}
       fullWidth
     />
   );

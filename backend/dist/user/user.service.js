@@ -39,16 +39,44 @@ let UserService = class UserService {
         const users = await qb.leftJoinAndMapMany('u.followings', follows_entity_1.FollowsEntity, 'follower', 'follower.followerId = u.id').loadRelationCountAndMap('u.followerCount', 'u.followers', 'followers')
             .getMany();
         return users.map((obj) => {
+            let runningDistance = 0;
+            let cycleDistance = 0;
+            obj.posts.forEach((post) => {
+                if (post.type === 'running') {
+                    runningDistance += +post.distance;
+                }
+                else {
+                    cycleDistance += +post.distance;
+                }
+            });
             delete obj.posts;
             delete obj.likes;
             delete obj.comments;
-            return obj;
+            return Object.assign(Object.assign({}, obj), { runningDistance,
+                cycleDistance });
         });
     }
     async findById(id) {
         const qb = this.repository.createQueryBuilder('u');
-        const user = await qb.leftJoinAndMapMany('u.likes', like_entity_1.LikeEntity, 'like', 'like.userId = u.id').where({ id }).getOne();
-        return user;
+        await qb.leftJoinAndMapMany('u.likes', like_entity_1.LikeEntity, 'like', 'like.userId = u.id').where({ id: id }).getOne();
+        await qb.leftJoinAndMapMany('u.followers', follows_entity_1.FollowsEntity, 'following', 'following.followingId = u.id').loadRelationCountAndMap('u.followingsCount', 'u.followings', 'followings').where({ id: id }).getOne();
+        await qb.leftJoinAndMapMany('u.posts', post_entity_1.PostEntity, 'posts', 'posts.userId = u.id').loadRelationCountAndMap('u.postsCount', 'u.posts', 'posts').where({ id: id }).getOne();
+        const user = await qb.leftJoinAndMapMany('u.followings', follows_entity_1.FollowsEntity, 'follower', 'follower.followerId = u.id').loadRelationCountAndMap('u.followerCount', 'u.followers', 'followers').where({ id: id }).getOne();
+        delete user.followings;
+        delete user.followers;
+        const lastActivity = user.posts[user.posts.length - 1];
+        let runningDistance = 0;
+        let cycleDistance = 0;
+        user.posts.forEach((post) => {
+            if (post.type === 'running') {
+                runningDistance += +post.distance;
+            }
+            else {
+                cycleDistance += +post.distance;
+            }
+        });
+        delete user.posts;
+        return Object.assign(Object.assign({}, user), { lastActivity, runningDistance, cycleDistance });
     }
     findByCond(cond) {
         return this.repository.findOne({ where: Object.assign({}, cond) });
