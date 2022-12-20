@@ -17,15 +17,27 @@ import FollowButton from '../components/FollowButton';
 import {Api} from "../utils/api";
 import {NextPage} from "next";
 import {ResponseUser} from "../utils/api/types";
-import {calculateRating, sortUsers} from "../utils/rating";
-import {useState} from "react";
+import {activityRating, calculateRating, sortSocial, sortSport} from "../utils/rating";
+import {useEffect, useState} from "react";
 
 interface RatingPageProps {
   users: ResponseUser[];
 }
 
 const Rating: NextPage<RatingPageProps> = ({users}) => {
-  const [sortedUsers, setSortedUsers] = useState(users.sort(sortUsers))
+  const [sortedUsers, setSortedUsers] = useState(users.sort(sortSocial))
+  const [ratingType, setRatingType] = useState('activity')
+
+  useEffect(() => {
+    if(ratingType === 'activity') {
+      setSortedUsers(users.sort(sortSocial))
+      console.log(sortedUsers)
+    } else {
+      setSortedUsers(users.sort(sortSport))
+      console.log(sortedUsers)
+    }
+  }, [ratingType]);
+
 
   return (
       <MainLayout>
@@ -43,13 +55,12 @@ const Rating: NextPage<RatingPageProps> = ({users}) => {
           </Typography>
           <Tabs
               className="mt-10"
-              value={0}
+              value={ratingType === 'activity' ? 0 : 1}
               indicatorColor="primary"
               textColor="primary"
           >
-            <Tab label="August" />
-            <Tab label="last 3 month" />
-            <Tab label="For all time" />
+            <Tab onClick={() => setRatingType('activity')} label="Blog activity" />
+            <Tab onClick={() => setRatingType('sport')} label="Sport rating" />
           </Tabs>
         </Paper>
 
@@ -63,17 +74,32 @@ const Rating: NextPage<RatingPageProps> = ({users}) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {sortedUsers.map((user) => (
-                  <TableRow key={user.id}>
-                    <TableCell component="th" scope="row">
-                      <span className="mr-15">{user.id}</span> {user.fullName}
-                    </TableCell>
-                    <TableCell align="right">{calculateRating(user.followerCount, user?.commentsCount, user?.postsCount, user?.likesCount)}</TableCell>
-                    <TableCell align="right">
-                      <FollowButton />
-                    </TableCell>
-                  </TableRow>
-              ))}
+              {ratingType === 'activity' ? (
+                  sortedUsers.map((user) => (
+                        <TableRow key={user.id}>
+                          <TableCell component="th" scope="row">
+                            <span className="mr-15">{user.id}</span> {user.fullName}
+                          </TableCell>
+                                  <TableCell align="right">{calculateRating(user.followerCount, user.commentsCount, user.postsCount, user.likesCount)}</TableCell>
+                          <TableCell align="right">
+                            <FollowButton />
+                          </TableCell>
+                        </TableRow>
+                    ))
+              ) : (
+                  sortedUsers.map((user) => (
+                      <TableRow key={user.id}>
+                        <TableCell component="th" scope="row">
+                          <span className="mr-15">{user.id}</span> {user.fullName}
+                        </TableCell>
+                        <TableCell align="right">{activityRating(user.runningDistance, user.cycleDistance)}</TableCell>
+                        <TableCell align="right">
+                          <FollowButton />
+                        </TableCell>
+                      </TableRow>
+                  ))
+              )}
+
             </TableBody>
           </Table>
         </Paper>

@@ -93,6 +93,9 @@ let PostService = class PostService {
         }
         const firstParagraph = dto.text.slice(0, 20);
         return this.repository.save({
+            type: dto.type,
+            distance: +dto.distance,
+            duration: +dto.duration,
             title: dto.title,
             text: dto.text,
             image: imagePath,
@@ -111,6 +114,9 @@ let PostService = class PostService {
         }
         const firstParagraph = (_a = dto.text) === null || _a === void 0 ? void 0 : _a.slice(0, 20);
         return this.repository.update(id, {
+            type: dto.type,
+            distance: +dto.distance,
+            duration: +dto.duration,
             title: dto.title,
             text: dto.text,
             image: imagePath || find.image,

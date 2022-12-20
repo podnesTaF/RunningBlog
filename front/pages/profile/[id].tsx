@@ -18,6 +18,8 @@ import React, {useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
 import {addFollow, removeFollow, selectFollows, selectUserData} from "../../redux/slices/user";
 import {deletePost, selectPosts} from "../../redux/slices/post";
+import SideStatistic from "../../components/SideStatistic";
+import UserStatistic from "../../components/UserStatictic";
 
 
 interface ProfilePageProps {
@@ -114,6 +116,7 @@ const ProfilePage: NextPage<ProfilePageProps> = ({comments, user, myFollowers  }
                             {user.fullName}
                         </Typography>
                     </div>
+                    <UserStatistic user={user} />
                     <div>
                         {isMe ? (
                             <Link legacyBehavior href="/profile/setting">
@@ -135,10 +138,6 @@ const ProfilePage: NextPage<ProfilePageProps> = ({comments, user, myFollowers  }
                                 Follow
                             </Button>
                         )}
-                        <Button style={{height: 42}} variant="contained" color="primary">
-                            <MessageIcon className="mr-10"/>
-                            Send a message
-                        </Button>
                     </div>
                 </div>
                 <div className="d-flex mb-10 mt-10">
@@ -170,6 +169,9 @@ const ProfilePage: NextPage<ProfilePageProps> = ({comments, user, myFollowers  }
                     ))}
                     {active === 0 && userPosts && userPosts.length !== 0 && userPosts.map((post) => (
                             <Post
+                                type={post.type}
+                                duration={post.duration}
+                                distance={post.distance}
                                 key={post.id}
                                 id={post.id}
                                 title={post.title}

@@ -31,6 +31,7 @@ export class UserService {
 
     await qb.leftJoinAndMapMany('u.posts', PostEntity, 'posts', 'posts.userId = u.id').loadRelationCountAndMap('u.postsCount', 'u.posts', 'posts').getMany()
 
+
     await qb.leftJoinAndMapMany(
         'u.comments',
         CommentEntity,
@@ -40,21 +41,57 @@ export class UserService {
         .loadRelationCountAndMap('u.commentsCount', 'u.comments', 'comments')
         .getMany();
 
+
     const users = await qb.leftJoinAndMapMany('u.followings', FollowsEntity, 'follower', 'follower.followerId = u.id').loadRelationCountAndMap('u.followerCount', 'u.followers', 'followers')
         .getMany()
 
     return users.map((obj) => {
+      let runningDistance = 0;
+      let cycleDistance = 0;
+      obj.posts.forEach((post) => {
+        if(post.type === 'running') {
+          runningDistance += +post.distance
+        } else {
+          cycleDistance += +post.distance
+        }
+
+      })
       delete obj.posts
       delete obj.likes
       delete obj.comments
-      return obj
+      return {
+        ...obj,
+        runningDistance,
+        cycleDistance
+      }
     });
   }
 
   async findById(id: number) {
     const qb = this.repository.createQueryBuilder('u')
-    const user = await qb.leftJoinAndMapMany('u.likes', LikeEntity, 'like', 'like.userId = u.id').where({id}).getOne()
-    return user
+    await qb.leftJoinAndMapMany('u.likes', LikeEntity, 'like', 'like.userId = u.id').where({id: id}).getOne()
+
+    await qb.leftJoinAndMapMany('u.followers', FollowsEntity, 'following', 'following.followingId = u.id').loadRelationCountAndMap('u.followingsCount', 'u.followings', 'followings').where({id: id}).getOne()
+
+    await qb.leftJoinAndMapMany('u.posts', PostEntity, 'posts', 'posts.userId = u.id').loadRelationCountAndMap('u.postsCount', 'u.posts', 'posts').where({id: id}).getOne()
+
+    const user = await qb.leftJoinAndMapMany('u.followings', FollowsEntity, 'follower', 'follower.followerId = u.id').loadRelationCountAndMap('u.followerCount', 'u.followers', 'followers').where({id: id}).getOne()
+
+    delete user.followings
+    delete user.followers
+    const lastActivity = user.posts[user.posts.length - 1]
+    let runningDistance = 0;
+    let cycleDistance = 0;
+    user.posts.forEach((post) => {
+      if(post.type === 'running') {
+        runningDistance += +post.distance
+      } else {
+        cycleDistance += +post.distance
+      }
+
+    })
+    delete user.posts
+    return {...user, lastActivity, runningDistance, cycleDistance}
   }
 
   findByCond(cond: LoginUserDto) {

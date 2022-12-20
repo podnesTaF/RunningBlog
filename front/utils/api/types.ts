@@ -51,11 +51,20 @@ export type ResponseUser = {
 
   likesCount?: number;
   postsCount?: number;
+
+  runningDistance: number;
+
+  cycleDistance: number;
   token: string;
   updatedAt: string;
+
+  lastActivity?: PostItem;
 };
 
 export type PostItem = {
+  type: 'running' | 'cycle';
+  duration: string;
+  distance: string;
   title: string;
   text: string;
   image?: string;

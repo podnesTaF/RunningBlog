@@ -17,6 +17,8 @@ a {
   -webkit-text-size-adjust: 100%;
   box-sizing: border-box;
   outline: none;
+  margin: 0;
+  padding: 0;
   font-family: Roboto, 'Helvetica Neue', Helvetica, sans-serif;
 }
 
@@ -90,5 +92,5 @@ button.save_btn {
 }
 
 .rightSide {
-  border-bottom-right-radius: 10px;
+  width: 350px;
 }

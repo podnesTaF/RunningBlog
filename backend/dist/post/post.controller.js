@@ -16,7 +16,6 @@ exports.PostController = void 0;
 const common_1 = require("@nestjs/common");
 const post_service_1 = require("./post.service");
 const create_post_dto_1 = require("./dto/create-post.dto");
-const update_post_dto_1 = require("./dto/update-post.dto");
 const searchg_post_dto_1 = require("./dto/searchg-post.dto");
 const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
 const user_decorator_1 = require("../decorators/user.decorator");
@@ -35,6 +34,7 @@ let PostController = class PostController {
         }
     }
     update(files, userId, id, updatePostDto) {
+        console.log(updatePostDto);
         let image;
         if (files.image) {
             image = files.image;
@@ -91,7 +91,7 @@ __decorate([
     __param(2, (0, common_1.Param)('id')),
     __param(3, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Number, String, update_post_dto_1.UpdatePostDto]),
+    __metadata("design:paramtypes", [Object, Number, String, create_post_dto_1.CreatePostDto]),
     __metadata("design:returntype", void 0)
 ], PostController.prototype, "update", null);
 __decorate([

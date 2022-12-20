@@ -5,6 +5,9 @@ import {AxiosInstance} from 'axios';
 import {PostItem} from './types';
 
 type CreatePostDto = {
+    type: 'running' | 'cycle';
+    duration: string;
+    distance: string;
     title: string;
     text: string;
     image?: any;
@@ -48,10 +51,12 @@ export const PostApi = (instance: AxiosInstance) => ({
     },
 
     async create(dto: CreatePostDto) {
-        console.log(dto.image)
         let formData = new FormData()
+        formData.append('type', dto.type)
         formData.append('title', dto.title)
         formData.append('text', dto.text)
+        formData.append('duration', dto.duration)
+        formData.append('distance', dto.distance)
         formData.append('image', dto.image)
         const {data} = await instance.post<CreatePostDto, { data: PostItem }>(
             '/posts',
@@ -67,8 +72,11 @@ export const PostApi = (instance: AxiosInstance) => ({
 
     async update(id: number, dto: CreatePostDto) {
         let formData = new FormData()
+        formData.append('type', dto.type)
         formData.append('title', dto.title)
         formData.append('text', dto.text)
+        formData.append('duration', dto.duration)
+        formData.append('distance', dto.distance)
         formData.append('image', dto.image)
         const {data} = await instance.patch<CreatePostDto, { data: PostItem }>(
             `/posts/${id}`,

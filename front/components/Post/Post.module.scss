@@ -1,7 +1,12 @@
 /** @format */
-.title {
+.titleWrapper {
   font-weight: 500 !important;
   font-size: 22px !important;
+  margin-bottom: 10px;
+  display: flex;
+  .title {
+    margin-left: 20px;
+  }
 }
 
 .userSection {
@@ -12,6 +17,7 @@
 
   img {
     width: 40px;
+    height: 40px;
     border-radius: 50%;
   }
 
@@ -42,5 +48,7 @@
   border-radius: 8px !important;
   margin-bottom: 30px;
 }
+
+
 
 

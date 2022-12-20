@@ -1,0 +1,19 @@
+.sportInfo {
+  margin: 10px 0;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  div {
+    margin-left: 10px;
+    padding-right: 10px;
+    border-right: 1px solid gray;
+    p {
+      margin: 0;
+      font-size: 24px;
+    }
+    p:first-child {
+      color: lightgray;
+      font-size: 16px;
+    }
+  }
+}

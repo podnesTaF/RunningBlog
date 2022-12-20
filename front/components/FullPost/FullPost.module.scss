@@ -22,6 +22,12 @@
     color: #07a287;
     text-decoration: underline;
   }
+  img {
+    justify-self: center;
+    width:100%;
+    height: 500px;
+    object-fit: cover;
+  }
 }
 
 .userInfo {

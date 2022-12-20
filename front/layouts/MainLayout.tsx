@@ -24,6 +24,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
   className,
 }) => {
 
+    const userData = useAppSelector(selectUserData)
 
   return (
     <div className={clsx('wrapper', className)}>
@@ -39,7 +40,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
       <div className={clsx('content', { 'content--full': contentFullWidth })}>
         {children}
       </div>
-      {!hideComments && (
+      {!hideComments && userData && (
         <div className="rightSide">
           <SideStatistic />
         </div>
