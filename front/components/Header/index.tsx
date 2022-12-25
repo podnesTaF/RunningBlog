@@ -4,17 +4,13 @@ import React, {useEffect, useState} from 'react';
 import {
     Paper,
     Button,
-    IconButton,
     Avatar, ListItem, ListItemButton, List,
 } from '@mui/material';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import {
     SearchOutlined as SearchIcon,
-    SmsOutlined as MessageIcon,
-    Menu as MenuIcon,
     ExpandMoreOutlined as ArrowBottom,
-    NotificationsNoneOutlined as NotificationIcon,
     AccountCircleOutlined as UserIcon,
 } from '@mui/icons-material';
 
@@ -124,12 +120,6 @@ export const Header: React.FC = () => {
             </div>
 
             <div className="d-flex align-center">
-                <IconButton>
-                    <MessageIcon className={styles.icon}/>
-                </IconButton>
-                <IconButton>
-                    <NotificationIcon className={styles.icon}/>
-                </IconButton>
                 {userData ? (
                     <>
                         <Link href={`/profile/${userData.id}`} className="d-flex align-center">

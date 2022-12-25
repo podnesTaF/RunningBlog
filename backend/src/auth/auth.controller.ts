@@ -10,7 +10,6 @@ import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import {FileFieldsInterceptor} from "@nestjs/platform-express";
-import {Response} from 'express'
 
 @Controller('auth')
 export class AuthController {

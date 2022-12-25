@@ -1,10 +1,9 @@
 /** @format */
 
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import ArrowRightIcon from '@mui/icons-material/NavigateNextOutlined';
 
 import styles from './sideComment.module.scss';
-import data from '../../data';
 import CommentItem from './SideCommentItem';
 import clsx from 'clsx';
 import {useComments} from "../../hooks/useComments";

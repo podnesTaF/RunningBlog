@@ -1,6 +1,6 @@
 /** @format */
 
-import React, {useEffect} from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import LeftMenu from '../components/LeftMenu';
 import SideComments from '../components/SideComments';

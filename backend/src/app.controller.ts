@@ -1,6 +1,5 @@
-import {Body, Controller, Get, Param, Post, Res, UploadedFiles, UseInterceptors} from '@nestjs/common';
+import {Controller, Get} from '@nestjs/common';
 import { AppService } from './app.service';
-import {FileInterceptor} from "@nestjs/platform-express";
 
 @Controller()
 export class AppController {

@@ -1,23 +1,31 @@
 /** @format */
 
 import React from 'react';
-import Link from 'next/link';
-import {Avatar, Divider, IconButton, Menu, MenuItem, Paper, Typography} from '@mui/material';
-import Image from 'next/image';
 
-import styles from './Post.module.scss';
-import PostActions from '../PostActions';
-import MoreIcon from "@mui/icons-material/MoreHorizOutlined";
+import Link from 'next/link';
+import Image from 'next/image';
 import {useRouter} from "next/router";
-import {Api} from "../../utils/api";
+
+import {Avatar, Divider, IconButton, Menu, MenuItem, Paper, Typography} from '@mui/material';
+import MoreIcon from "@mui/icons-material/MoreHorizOutlined";
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
-import {ResponseUser} from "../../utils/api/types";
-import {countPace, getHr, getMin, getSec, humanReadable} from "../../utils/time";
-import {useAppDispatch, useAppSelector} from "../../redux/hooks";
-import {selectUserData} from "../../redux/slices/user";
-import {deletePost} from "../../redux/slices/post";
+
 import RunInfo from "../RunInfo";
+import AddCommentForm from "../AddCommentForm";
+import PostActions from '../PostActions';
+import Comment from "../Comment";
+
+import {CommentItem, ResponseUser} from "../../utils/api/types";
+import {humanReadable} from "../../utils/time";
+import {Api} from "../../utils/api";
+
+import {useAppSelector} from "../../redux/hooks";
+import {useComments} from "../../hooks/useComments";
+
+import {selectUserData} from "../../redux/slices/user";
+
+import styles from './Post.module.scss';
 
 interface PostProps {
   title: string;
@@ -48,6 +56,13 @@ const Post: React.FC<PostProps> = ({ id, title, text, image, isMe, likesCount, l
     const router = useRouter()
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [likeIds, setLikeIds] = React.useState(likes?.map((like) => like.id));
+    const [openComment, setOpenComment] = React.useState(false);
+    const [reference, setReference] = React.useState(null);
+    const {comments, setComments} = useComments(id)
+
+    const onAddComment = (obj: CommentItem) => {
+        setComments(prev => [...prev, obj])
+    }
 
     const handleClick = (event: any) => {
         setAnchorEl(event.currentTarget);
@@ -75,6 +90,10 @@ const Post: React.FC<PostProps> = ({ id, title, text, image, isMe, likesCount, l
         } catch (err: any) {
             console.log('like error:', err)
         }
+    }
+
+    const getRef = (ref: any) => {
+        setReference(ref)
     }
 
   return (
@@ -127,7 +146,25 @@ const Post: React.FC<PostProps> = ({ id, title, text, image, isMe, likesCount, l
                height={500}
                src={`http://localhost:4000/${image}`} alt={'loo'} />
       )}
-        {userData && <PostActions onLike={onLike} onUnlike={onUnlike} ids={likeIds} likesCount={likesCount}  />}
+        {userData && <PostActions onLike={onLike} onUnlike={onUnlike} ids={likeIds} likesCount={likesCount} toggleComments={setOpenComment} />}
+        {userData && openComment && (
+            <div>
+                <AddCommentForm getRef={getRef} onSuccessAdd={onAddComment} postId={id} />
+                <div className="mb-20" />
+                <div>
+                    {comments.map((obj) => (
+                    <Comment
+                        key={obj.id}
+                        id={obj.id}
+                        user={obj.user}
+                        text={obj.text}
+                        createdAt={obj.createdAt}
+                        currUserId={userData?.id}
+                    />
+                ))}
+                </div>
+            </div>
+        )}
     </Paper>
   );
 };

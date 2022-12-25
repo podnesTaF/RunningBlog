@@ -1,18 +1,20 @@
 /** @format */
 
-import { Alert, Button, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
+import { setCookie } from 'nookies';
 import { useForm, FormProvider } from 'react-hook-form';
-import { RegisterSchema } from '../../../utils/validation';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import styles from '../AuthDialog.module.scss';
+import { Alert, Button  } from '@mui/material';
 import { FormField } from '../../FormField';
-import { setCookie } from 'nookies';
+
+import {Api} from "../../../utils/api";
+import { RegisterSchema } from '../../../utils/validation'
+
 import { useAppDispatch } from '../../../redux/hooks';
 import { setUserData } from '../../../redux/slices/user';
-import {Api} from "../../../utils/api";
 
+import styles from '../AuthDialog.module.scss';
 interface LoginFormProps {
   onOpenRegister: () => void;
   onOpenLogin: () => void;

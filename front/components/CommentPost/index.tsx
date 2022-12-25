@@ -7,16 +7,13 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import styles from './CommentPost.module.scss';
 
 interface CommentPostProps {
-  user: {
-    fullname: string;
-  };
   text: string;
   post: {
     title: string;
   };
 }
 
-const CommentPost: React.FC<CommentPostProps> = ({ user, post, text }) => {
+const CommentPost: React.FC<CommentPostProps> = ({post, text }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event: any) => {

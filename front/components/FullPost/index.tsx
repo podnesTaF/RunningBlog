@@ -2,7 +2,6 @@
 
 import React, {FC, useEffect, useRef, useState} from 'react';
 import {Avatar, Button, Paper, Typography} from '@mui/material';
-import PostActions from '../PostActions';
 import MessageIcon from '@mui/icons-material/TextsmsOutlined';
 import UserAddIcon from '@mui/icons-material/PersonAddOutlined';
 

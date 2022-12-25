@@ -1,7 +1,6 @@
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
-import { UserEntity } from '../user/entities/user.entity';
 export declare class CommentController {
     private readonly commentService;
     constructor(commentService: CommentService);
@@ -16,7 +15,7 @@ export declare class CommentController {
         };
         id: number;
         text: string;
-        user: UserEntity;
+        user: import("../user/entities/user.entity").UserEntity;
         createdAt: Date;
         updatedAt: Date;
     }[]>;

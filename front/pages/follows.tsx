@@ -1,19 +1,17 @@
 /** @format */
 
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import MainLayout from '../layouts/MainLayout';
 import {Container} from "@mui/system";
 import {GetServerSideProps, NextPage} from "next";
 import {Api} from "../utils/api";
-import {PostItem, ResponseUser} from "../utils/api/types";
+import {PostItem} from "../utils/api/types";
 import Post from "../components/Post";
 import {Typography} from "@mui/material";
 import {useAppSelector} from "../redux/hooks";
 import {selectFollows, selectUserData} from "../redux/slices/user";
 import {selectPosts} from "../redux/slices/post";
 import {Simulate} from "react-dom/test-utils";
-import select = Simulate.select;
-import SideStatistic from "../components/SideStatistic";
 
 interface FollowsPageProps {
     posts?: PostItem[];

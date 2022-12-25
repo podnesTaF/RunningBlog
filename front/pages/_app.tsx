@@ -11,8 +11,6 @@ import Head from 'next/head';
 import '../styles/globals.scss';
 import 'macro-css';
 import { wrapper } from '../redux/store';
-import { parseCookies } from 'nookies';
-import { UserApi } from '../utils/api/user';
 import {setMyFollows, setUserData} from '../redux/slices/user';
 import { Api } from '../utils/api';
 import {setPosts} from "../redux/slices/post";
