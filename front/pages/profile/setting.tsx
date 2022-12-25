@@ -3,7 +3,6 @@
 import { Button, Divider, Paper, TextField, Typography } from '@mui/material';
 import MainLayout from '../../layouts/MainLayout';
 import {GetServerSideProps, NextPage} from "next";
-import {useInput} from "../../hooks/useInput";
 import {ResponseUser} from "../../utils/api/types";
 import React from "react";
 import SettingForm from "../../components/SettingForm";

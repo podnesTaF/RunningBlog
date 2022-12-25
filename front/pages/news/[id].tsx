@@ -3,7 +3,6 @@
 import MainLayout from '../../layouts/MainLayout';
 import {FullPost} from '../../components/FullPost';
 import PostComponent from '../../components/PostComments';
-import data from '../../data';
 import {GetServerSideProps, NextPage} from "next";
 import {Api} from "../../utils/api";
 import { PostItem, ResponseUser } from '../../utils/api/types';

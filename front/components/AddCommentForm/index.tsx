@@ -3,10 +3,9 @@
 import React, {useRef, useState} from 'react';
 import {Button, Input} from '@mui/material';
 
-import styles from './AddComentForm.module.scss';
 import {Api} from "../../utils/api";
 import {CommentItem} from "../../utils/api/types";
-
+import styles from './AddComentForm.module.scss';
 interface AddCommentFormProps {
     onSuccessAdd: (obj: CommentItem) => void;
     postId: number;
@@ -61,7 +60,7 @@ const AddCommentForm: React.FC<AddCommentFormProps> = ({postId, onSuccessAdd, ge
                     variant="contained"
                     color="primary"
                 >
-                    Create article
+                    add comment
                 </Button>
             )}
         </div>

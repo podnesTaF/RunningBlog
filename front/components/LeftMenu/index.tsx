@@ -1,6 +1,7 @@
 /** @format */
 
 import React from 'react';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { Button } from '@mui/material';
 import {
@@ -11,12 +12,11 @@ import {
 } from '@mui/icons-material';
 
 import styles from './leftMenu.module.scss';
-import { useRouter } from 'next/router';
 
 const menu = [
   { text: 'Timeline', icon: <FireIcon />, path: '/' },
   { text: 'Messages', icon: <MessageIcon />, path: '/messages' },
-  { text: 'Rating RJ', icon: <TrendingIcon />, path: '/rating' },
+  { text: 'Rating BMb', icon: <TrendingIcon />, path: '/rating' },
   { text: 'Follows', icon: <ListIcon />, path: '/follows' },
 ];
 

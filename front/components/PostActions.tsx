@@ -4,7 +4,6 @@ import React, {CSSProperties, useEffect, useState} from 'react';
 import { IconButton } from '@mui/material';
 import {
   ModeCommentOutlined as CommentsIcon,
-  ShareOutlined as ShareIcon,
 } from '@mui/icons-material';
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -26,11 +25,12 @@ const styles: CSSProperties = {
 interface PostActionsProps {
     onLike: Function;
     onUnlike: Function;
-    ids?: number[]
+    ids?: number[];
 
-    likesCount: number
+    toggleComments: Function;
+    likesCount: number;
 }
-const PostActions: React.FC<PostActionsProps> = ({onLike, ids, onUnlike, likesCount}) => {
+const PostActions: React.FC<PostActionsProps> = ({onLike, ids, onUnlike, likesCount, toggleComments}) => {
     const [isLiked, setIsLiked] = useState(false)
     const [likeCount, setLikeCount] = useState(likesCount)
     const userData = useAppSelector(selectUserData)
@@ -70,14 +70,9 @@ const PostActions: React.FC<PostActionsProps> = ({onLike, ids, onUnlike, likesCo
           {likeCount} likes
       </li>
       <li>
-          <IconButton>
+          <IconButton onClick={() => toggleComments((prev: boolean) => !prev)}>
               <CommentsIcon />
           </IconButton>
-      </li>
-      <li>
-        <IconButton>
-          <ShareIcon />
-        </IconButton>
       </li>
     </ul>
   );

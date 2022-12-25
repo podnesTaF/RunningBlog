@@ -4,7 +4,6 @@ import Link from 'next/link';
 import {Paper, Avatar, Typography, Button, Tabs, Tab} from '@mui/material';
 import {
     SettingsOutlined as SettingsIcon,
-    TextsmsOutlined as MessageIcon,
 } from '@mui/icons-material';
 
 import Post from '../../components/Post/index';
@@ -12,13 +11,11 @@ import MainLayout from '../../layouts/MainLayout';
 import {GetServerSideProps, NextPage} from "next";
 import {Api} from "../../utils/api";
 import {CommentItem, PostItem, ResponseUser} from "../../utils/api/types";
-import PostComponent from "../../components/PostComments";
 import Comment from "../../components/Comment";
 import React, {useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
 import {addFollow, removeFollow, selectFollows, selectUserData} from "../../redux/slices/user";
 import {deletePost, selectPosts} from "../../redux/slices/post";
-import SideStatistic from "../../components/SideStatistic";
 import UserStatistic from "../../components/UserStatictic";
 
 

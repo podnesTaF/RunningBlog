@@ -1,13 +1,12 @@
 import React, {useState} from 'react';
 import {ResponseUser, UpdateUserDto} from '../../utils/api/types';
 import {Button, Divider} from "@mui/material";
-import {FormProvider, useForm, useFormContext} from "react-hook-form";
+import {FormProvider, useForm} from "react-hook-form";
 import {yupResolver} from '@hookform/resolvers/yup';
 import {ChangeUserDataSchema} from "../../utils/validation";
 import {FormField} from "../FormField";
 import {useRouter} from "next/router";
 import Alert from "@mui/material/Alert";
-import axios from "axios";
 import {Api} from "../../utils/api";
 
 interface SettingFormProps {

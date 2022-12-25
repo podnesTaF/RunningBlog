@@ -1,9 +1,7 @@
 /** @format */
 
-import clsx from 'clsx';
 import React, { useState } from 'react';
 import styles from './SideStatistic.module.scss';
-import ArrowRightIcon from '@mui/icons-material/NavigateNextOutlined';
 import Link from 'next/link';
 import {selectUserData} from "../../redux/slices/user";
 import {useAppSelector} from "../../redux/hooks";

@@ -2,7 +2,7 @@
 
 import React, {useState} from 'react';
 import styles from './WriteForm.module.scss';
-import {Button, Divider, InputAdornment, MenuItem, TextField} from '@mui/material';
+import {Button, Divider} from '@mui/material';
 import {Api} from '../../utils/api';
 import {PostItem} from '../../utils/api/types';
 import {useRouter} from "next/router";

@@ -1,15 +1,11 @@
 /** @format */
 
-import React, {useState} from 'react';
+import React from 'react';
 import { GetServerSideProps, NextPage } from 'next';
 import MainLayout from '../../layouts/MainLayout';
 import WriteForm from '../../components/WriteForm';
 import { Api } from '../../utils/api';
 import { PostItem } from '../../utils/api/types';
-import { useAppSelector } from '../../redux/hooks';
-import {selectPosts} from "../../redux/slices/post";
-import {useRouter} from "next/router";
-import {selectUserData} from "../../redux/slices/user";
 
 interface WritePageProps {
   post: PostItem;

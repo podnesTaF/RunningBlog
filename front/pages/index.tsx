@@ -4,14 +4,10 @@ import type { NextPage } from 'next';
 import MainLayout from '../layouts/MainLayout';
 import Post from '../components/Post/index';
 import { Api } from '../utils/api';
-import {PostItem, ResponseUser} from '../utils/api/types';
+import {PostItem} from '../utils/api/types';
 import React, {useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from "../redux/hooks";
-import {selectFollows, selectUserData} from "../redux/slices/user";
-import {Simulate} from "react-dom/test-utils";
-import select = Simulate.select;
 import {selectPosts, setPosts} from "../redux/slices/post";
-import SideStatistic from "../components/SideStatistic";
 
 interface HomeProps {
   posts: PostItem[];

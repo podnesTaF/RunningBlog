@@ -6,7 +6,11 @@ import MainLayout from '../layouts/MainLayout';
 const MessagesPage = () => {
   return (
     <MainLayout>
-      <div>MessagesPage</div>
+      <div>
+          <h2>
+              Messages Page in development
+          </h2>
+      </div>
     </MainLayout>
   );
 };

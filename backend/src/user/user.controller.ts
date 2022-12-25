@@ -6,10 +6,9 @@ import {
   Param,
   UseGuards,
   Request,
-  Query, Post,
+  Query,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { SearchUserDto } from './dto/searchg-user.dto';
 

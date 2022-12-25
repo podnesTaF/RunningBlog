@@ -1,9 +1,6 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import styles from "../WriteForm/WriteForm.module.scss";
 import {InputAdornment, MenuItem, TextField} from "@mui/material";
-import {useInput} from "../../hooks/useInput";
-import {getHr, getMin, getSec} from "../../utils/time";
-import {PostItem} from "../../utils/api/types";
 
 interface inputActions {
     value?: string | number,
