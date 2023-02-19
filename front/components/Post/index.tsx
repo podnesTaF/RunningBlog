@@ -101,7 +101,7 @@ const Post: React.FC<PostProps> = ({ id, title, text, image, isMe, likesCount, l
         {creator && <div className={styles.userSection}>
             {creator?.image ?
                <Link href={`/profile/${creator.id}`}>
-                   <img src={`http://localhost:4000/${creator.image}`} alt='user avatar' />
+                   <Image src={`http://localhost:4000/${creator.image}`} width={50} height={50} alt='user avatar' />
                </Link>
                 :
                 <Avatar>{creator.fullName[0]}</Avatar>

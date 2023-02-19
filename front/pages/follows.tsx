@@ -58,7 +58,7 @@ const FollowsPage: NextPage<FollowsPageProps> = () => {
                   creator={post.user}
               />
           )) :
-              <Typography>You aren't following people with posts</Typography>
+              <Typography>You arent following people with posts</Typography>
           }
       </Container>
     </MainLayout>

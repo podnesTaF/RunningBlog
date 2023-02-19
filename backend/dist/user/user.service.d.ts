@@ -31,6 +31,9 @@ export declare class UserService {
         followings: FollowsEntity[];
         likes: LikeEntity[];
         posts: PostEntity[];
+        conversationsAsSender: import("../conversation/entities/conversation.entity").ConversationEntity[];
+        conversationsAsReceiver: import("../conversation/entities/conversation.entity").ConversationEntity[];
+        messages: import("../messages/entities/message.entity").MessageEntity[];
         password: string;
         createdAt: Date;
         updatedAt: Date;
@@ -48,6 +51,9 @@ export declare class UserService {
         followings: FollowsEntity[];
         likes: LikeEntity[];
         posts: PostEntity[];
+        conversationsAsSender: import("../conversation/entities/conversation.entity").ConversationEntity[];
+        conversationsAsReceiver: import("../conversation/entities/conversation.entity").ConversationEntity[];
+        messages: import("../messages/entities/message.entity").MessageEntity[];
         password: string;
         createdAt: Date;
         updatedAt: Date;

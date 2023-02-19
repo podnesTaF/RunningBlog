@@ -25,6 +25,11 @@ const follows_entity_1 = require("./follows/entities/follows.entity");
 const follows_module_1 = require("./follows/follows.module");
 const like_module_1 = require("./like/like.module");
 const like_entity_1 = require("./like/entities/like.entity");
+const process = require("process");
+const messages_module_1 = require("./messages/messages.module");
+const conversation_module_1 = require("./conversation/conversation.module");
+const conversation_entity_1 = require("./conversation/entities/conversation.entity");
+const message_entity_1 = require("./messages/entities/message.entity");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -32,12 +37,12 @@ AppModule = __decorate([
         imports: [
             typeorm_1.TypeOrmModule.forRoot({
                 type: 'postgres',
-                host: 'localhost',
+                host: process.env.DB_HOST,
                 port: 5432,
                 username: 'postgres',
-                password: 'podnes1972',
+                password: "podnes1972",
                 database: 'postgres',
-                entities: [user_entity_1.UserEntity, post_entity_1.PostEntity, comment_entity_1.CommentEntity, follows_entity_1.FollowsEntity, like_entity_1.LikeEntity],
+                entities: [user_entity_1.UserEntity, post_entity_1.PostEntity, comment_entity_1.CommentEntity, follows_entity_1.FollowsEntity, like_entity_1.LikeEntity, conversation_entity_1.ConversationEntity, message_entity_1.MessageEntity],
                 synchronize: true,
             }),
             user_module_1.UserModule,
@@ -50,6 +55,8 @@ AppModule = __decorate([
             auth_module_1.AuthModule,
             file_module_1.FileModule,
             like_module_1.LikeModule,
+            messages_module_1.MessageModule,
+            conversation_module_1.ConversationModule
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

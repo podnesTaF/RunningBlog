@@ -59,7 +59,9 @@ const ProfilePage: NextPage<ProfilePageProps> = ({comments, user, myFollowers  }
         } else {
             setIsFollowed(false)
         }
+        // @ts-ignore
     }, [])
+
 
     const handleDelete = async(id: number) => {
         try {

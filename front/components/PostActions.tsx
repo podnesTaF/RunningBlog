@@ -43,6 +43,7 @@ const PostActions: React.FC<PostActionsProps> = ({onLike, ids, onUnlike, likesCo
         } else {
             setIsLiked(false)
         }
+        // @ts-ignore
     }, [])
 
     const handleLike = () => {

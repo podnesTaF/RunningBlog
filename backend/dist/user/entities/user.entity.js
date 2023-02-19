@@ -15,6 +15,8 @@ const comment_entity_1 = require("../../comment/entities/comment.entity");
 const follows_entity_1 = require("../../follows/entities/follows.entity");
 const like_entity_1 = require("../../like/entities/like.entity");
 const post_entity_1 = require("../../post/entities/post.entity");
+const conversation_entity_1 = require("../../conversation/entities/conversation.entity");
+const message_entity_1 = require("../../messages/entities/message.entity");
 let UserEntity = class UserEntity {
 };
 __decorate([
@@ -58,6 +60,27 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => post_entity_1.PostEntity, post => post.user),
     __metadata("design:type", Array)
 ], UserEntity.prototype, "posts", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => conversation_entity_1.ConversationEntity, conversation => conversation.sender, {
+        eager: false,
+        nullable: true,
+    }),
+    __metadata("design:type", Array)
+], UserEntity.prototype, "conversationsAsSender", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => conversation_entity_1.ConversationEntity, conversation => conversation.receiver, {
+        eager: false,
+        nullable: true,
+    }),
+    __metadata("design:type", Array)
+], UserEntity.prototype, "conversationsAsReceiver", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => message_entity_1.MessageEntity, message => message.sender, {
+        eager: false,
+        nullable: true,
+    }),
+    __metadata("design:type", Array)
+], UserEntity.prototype, "messages", void 0);
 __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)

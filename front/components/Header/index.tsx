@@ -97,8 +97,8 @@ export const Header: React.FC = () => {
                             <List>
                                 {
                                     posts.map((post) => (
-                                        <Link onClick={handleClosePopup} href={`/news/${post.id}`}>
-                                            <ListItem key={post.id}>
+                                        <Link key={post.id} onClick={handleClosePopup} href={`/news/${post.id}`}>
+                                            <ListItem>
                                                 <ListItemButton>
                                                     {post.title}
                                                 </ListItemButton>

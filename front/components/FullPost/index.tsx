@@ -11,6 +11,7 @@ import Link from "next/link";
 import {Api} from "../../utils/api";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
 import {addFollow, removeFollow, selectFollows, selectUserData} from "../../redux/slices/user";
+import Image from "next/image";
 
 interface FullPostProps {
   title: string;
@@ -42,6 +43,7 @@ export const FullPost: FC<FullPostProps> = ({title, text, image, user, reference
     }else {
       setIsFollowed(false)
     }
+    // @ts-ignore
   }, [])
 
   const follow = async() => {
@@ -78,16 +80,18 @@ export const FullPost: FC<FullPostProps> = ({title, text, image, user, reference
           </Typography>
           {image && (
               <Typography>
-                <img src={`http://localhost:4000/${image}`} alt='image' />
+                <Image src={`http://localhost:4000/${image}`} width={640} height={640} alt='image' />
               </Typography>
           )}
         </div>
         <hr/>
         <div className="d-flex justify-between align-center mt-30 mb-30">
           <Link href={`/profile/${user.id}`} className={styles.userInfo}>
-            {user.image && <img
+            {user.image && <Image
                 src={"http://localhost:4000/" + user.image}
                 alt="avatar"
+                width={50}
+                height={50}
             />}
             {!user.image &&  <Avatar className='mr-10'>{user.fullName[0].toUpperCase()}</Avatar>}
             <b>{user.fullName}</b>

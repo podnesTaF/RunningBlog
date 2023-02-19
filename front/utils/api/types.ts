@@ -94,3 +94,21 @@ export type CommentItem = {
   createdAt: string;
   updatedAt: string;
 }
+
+export type ConversationItem = {
+    id: number;
+    sender: ResponseUser;
+    receiver: ResponseUser;
+}
+
+export type MessageItem = {
+    id: number;
+    sender: ResponseUser;
+    text: string;
+    conversation: ConversationItem;
+}
+
+export type MessageDto = {
+  conversationId: number;
+  text: string;
+}

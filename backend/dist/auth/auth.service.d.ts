@@ -24,6 +24,9 @@ export declare class AuthService {
         followings: import("../follows/entities/follows.entity").FollowsEntity[];
         likes: import("../like/entities/like.entity").LikeEntity[];
         posts: import("../post/entities/post.entity").PostEntity[];
+        conversationsAsSender: import("../conversation/entities/conversation.entity").ConversationEntity[];
+        conversationsAsReceiver: import("../conversation/entities/conversation.entity").ConversationEntity[];
+        messages: import("../messages/entities/message.entity").MessageEntity[];
         createdAt: Date;
         updatedAt: Date;
     }>;
@@ -39,6 +42,9 @@ export declare class AuthService {
         followings: import("../follows/entities/follows.entity").FollowsEntity[];
         likes: import("../like/entities/like.entity").LikeEntity[];
         posts: import("../post/entities/post.entity").PostEntity[];
+        conversationsAsSender: import("../conversation/entities/conversation.entity").ConversationEntity[];
+        conversationsAsReceiver: import("../conversation/entities/conversation.entity").ConversationEntity[];
+        messages: import("../messages/entities/message.entity").MessageEntity[];
         createdAt: Date;
         updatedAt: Date;
     }>;

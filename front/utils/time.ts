@@ -40,7 +40,6 @@ export const getHr = (duration?: string) => {
 export const getMin = (duration?: string) => {
     if(duration) {
         let remainder = +duration % 3600
-        console.log(remainder)
         const newRemainder = remainder % 60
         const min = (remainder - newRemainder) / 60
         return min >= 10 ? `${min}` : `0${min}`;

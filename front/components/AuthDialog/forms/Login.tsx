@@ -33,7 +33,7 @@ const Login: React.FC<LoginFormProps> = ({ onOpenRegister }) => {
     resolver: yupResolver(LoginFormSchema),
   });
 
-  const onSubmit = async (dto: LoginUserDto) => {
+  const onSubmit = async (dto: any) => {
     try {
       const data = await Api().user.login(dto);
       setCookie(null, 'token', data.token, {
@@ -58,7 +58,6 @@ const Login: React.FC<LoginFormProps> = ({ onOpenRegister }) => {
       }
     }
   };
-
 
   return (
     <div className={styles.formContainer}>

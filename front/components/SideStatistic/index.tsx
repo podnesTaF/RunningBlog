@@ -9,6 +9,7 @@ import {Avatar, Divider} from "@mui/material";
 import {humanReadable} from "../../utils/time";
 import {activityRating} from "../../utils/rating";
 import {deepOrange} from "@mui/material/colors";
+import Image from "next/image";
 
 const SideStatistic = () => {
     const userData = useAppSelector(selectUserData)
@@ -22,9 +23,11 @@ const SideStatistic = () => {
         <div className={styles.statItem}>
           <div className={styles.userInfo}>
               {userData?.image ? (
-                  <img
-                      src={`http://localhost:4000/${userData?.image}`}
+                  <Image
+                      src={`http://localhost:4000/${userData.image}`}
                       alt="avatar"
+                      width={70}
+                      height={70}
                   />
               ):(
                   <Avatar sx={{ bgcolor: deepOrange[500], height: 70, width: 70 }}>
@@ -59,7 +62,7 @@ const SideStatistic = () => {
                     </Link>
                     ) : (
                         <p>
-                        You don't have any activity yet
+                        You dont have any activity yet
                     </p>
                     )}
             </div>

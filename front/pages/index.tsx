@@ -9,25 +9,10 @@ import React, {useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from "../redux/hooks";
 import {selectPosts, setPosts} from "../redux/slices/post";
 
-interface HomeProps {
-  posts: PostItem[];
-}
 
-const Home: NextPage<HomeProps> = () => {
+const Home: NextPage = () => {
   const  posts  = useAppSelector(selectPosts)
-  const dispatch = useAppDispatch()
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const posts = await Api().post.getAll()
-        dispatch(setPosts(posts))
-      } catch (err) {
-        console.log(err)
-      }
-
-    })()
-  }, [])
 
   return (
     <MainLayout>
@@ -54,7 +39,9 @@ const Home: NextPage<HomeProps> = () => {
 
 export const getServerSideProps = async (ctx: any) => {
   try {
+    const dispatch = useAppDispatch()
     const posts = await Api().post.getAll();
+    dispatch(setPosts(posts))
     return {
       props: {
         posts,
@@ -69,25 +56,5 @@ export const getServerSideProps = async (ctx: any) => {
     },
   };
 };
-
-// export const getServerSideProps: GetServerSideProps =
-//   wrapper.getServerSideProps((store) => async (ctx) => {
-//     try {
-//       const { authToken } = parseCookies(ctx);
-
-//       const userData = await UserApi.getMe(authToken);
-
-//       store.dispatch(setUserData(userData));
-
-//       return {
-//         props: {},
-//       };
-//     } catch (err) {
-//       console.log(err);
-//       return {
-//         props: {},
-//       };
-//     }
-//   });
 
 export default Home;

@@ -6,11 +6,13 @@ import { UserApi } from './user';
 import axios from 'axios';
 import { PostApi } from './post';
 import { CommentApi } from './comment';
+import {ConversationApi} from "./conversation";
 
 interface ApiReturnType {
   user: ReturnType<typeof UserApi>;
   post: ReturnType<typeof PostApi>;
   comment: ReturnType<typeof CommentApi>;
+  conversation: ReturnType<typeof ConversationApi>;
 }
 
 export const Api = (
@@ -27,7 +29,8 @@ export const Api = (
   const apis = {
     user: UserApi,
     post: PostApi,
-    comment: CommentApi
+    comment: CommentApi,
+    conversation: ConversationApi,
   }
 
   return Object.entries(apis).reduce((prev, [key, f]) => {

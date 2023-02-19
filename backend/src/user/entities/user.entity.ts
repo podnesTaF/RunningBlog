@@ -4,12 +4,14 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToMany, BeforeInsert,
+  OneToMany, ManyToMany, ManyToOne,
 } from 'typeorm';
 import { CommentEntity } from '../../comment/entities/comment.entity';
 import {FollowsEntity} from "../../follows/entities/follows.entity";
 import {LikeEntity} from "../../like/entities/like.entity";
 import {PostEntity} from "../../post/entities/post.entity";
+import {ConversationEntity} from "../../conversation/entities/conversation.entity";
+import {MessageEntity} from "../../messages/entities/message.entity";
 
 @Entity('users')
 export class UserEntity {
@@ -46,6 +48,24 @@ export class UserEntity {
 
   @OneToMany(() => PostEntity, post => post.user)
   posts: PostEntity[];
+
+  @OneToMany(() => ConversationEntity, conversation => conversation.sender, {
+    eager: false,
+    nullable: true,
+  })
+  conversationsAsSender: ConversationEntity[];
+
+  @OneToMany(() => ConversationEntity, conversation => conversation.receiver, {
+    eager: false,
+    nullable: true,
+  })
+  conversationsAsReceiver: ConversationEntity[];
+
+  @OneToMany(() => MessageEntity, message => message.sender, {
+    eager: false,
+    nullable: true,
+  })
+    messages: MessageEntity[];
 
   @Column({ nullable: true })
   password: string;

@@ -36,6 +36,7 @@ const Rating: NextPage<RatingPageProps> = ({users}) => {
       setSortedUsers(users.sort(sortSport))
       console.log(sortedUsers)
     }
+    // @ts-ignore
   }, [ratingType]);
 
 
@@ -46,12 +47,10 @@ const Rating: NextPage<RatingPageProps> = ({users}) => {
               variant="h5"
               style={{ fontWeight: 'bold', fontSize: 30, marginBottom: 6 }}
           >
-            Rating of communities and blogs
+            Rating of users activity
           </Typography>
           <Typography style={{ fontSize: 15 }}>
-            Ten best authors, commentators and administrators of the first ten
-            communities from rating by month results will get a Plus-account per
-            free for one month
+Here you can see the rating of users activity. It counted by special algorithm. The more posts, likes, comments, followers, followings you have, the more you are in the rating as blogger. You also can be the most active user in sport, just run or ride more than others.
           </Typography>
           <Tabs
               className="mt-10"

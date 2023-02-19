@@ -16,17 +16,22 @@ import {FollowsEntity} from "./follows/entities/follows.entity";
 import {FollowsModule} from "./follows/follows.module";
 import { LikeModule } from './like/like.module';
 import { LikeEntity } from './like/entities/like.entity';
+import * as process from "process";
+import {MessageModule} from "./messages/messages.module";
+import {ConversationModule} from "./conversation/conversation.module";
+import {ConversationEntity} from "./conversation/entities/conversation.entity";
+import {MessageEntity} from "./messages/entities/message.entity";
 
 @Module({
     imports: [
         TypeOrmModule.forRoot({
             type: 'postgres',
-            host: 'localhost',
+            host: process.env.DB_HOST,
             port: 5432,
             username: 'postgres',
-            password: 'podnes1972',
+            password: "podnes1972",
             database: 'postgres',
-            entities: [UserEntity, PostEntity, CommentEntity, FollowsEntity, LikeEntity],
+            entities: [UserEntity, PostEntity, CommentEntity, FollowsEntity, LikeEntity, ConversationEntity, MessageEntity],
             synchronize: true,
         }),
         UserModule,
@@ -39,6 +44,8 @@ import { LikeEntity } from './like/entities/like.entity';
         AuthModule,
         FileModule,
         LikeModule,
+        MessageModule,
+        ConversationModule
     ],
     controllers: [AppController],
     providers: [AppService],

@@ -22,7 +22,7 @@ export const FormField: React.FC<FormFieldProps> = ({ name, label, type}) => {
       label={label}
       type={type}
       error={!!formState.errors[name]?.message}
-      helperText={formState.errors[name]?.message}
+      helperText={'invalid input'}
       fullWidth
     />
   );

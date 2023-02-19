@@ -32,7 +32,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
         <>
           <div className="leftSide">
             <LeftMenu />
-            <SideComments />
+            {!hideComments && <SideComments />}
           </div>
         </>
       )}

@@ -1,4 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
+import Image from "next/image";
 import styles from "../WriteForm/WriteForm.module.scss";
 import clsx from "clsx";
 
@@ -19,6 +20,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({setImage, image, imageUrl}) =>
 
     useEffect(() => {
         setPreviewUrl(`http://localhost:4000/${imageUrl}`)
+        // @ts-ignore
     }, []);
 
 
@@ -79,8 +81,8 @@ const ImageUpload: React.FC<ImageUploadProps> = ({setImage, image, imageUrl}) =>
             <div className={styles.imageUpload}>
                 <div onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}
                      className={styles.imageUploadPreview}>
-                    {oldImageUrl ? <img src={oldImageUrl} alt='Preview'/> : previewUrl && valid &&
-                        <img src={previewUrl} alt='Preview'/>}
+                    {oldImageUrl ? <Image src={oldImageUrl} width={80} height={80} alt='Preview'/> : previewUrl && valid &&
+                        <Image  width={80} height={80} src={previewUrl} alt='Preview'/>}
                     {isHover && <div className={styles.deletePreview} onClick={handleDelete}>DELETE</div>}
                 </div>
             </div>

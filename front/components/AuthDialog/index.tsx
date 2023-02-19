@@ -15,8 +15,8 @@ interface AuthDialogProps {
 
 import styles from './AuthDialog.module.scss';
 import Login from './forms/Login';
-import MainLogin from './forms/MainLogin';
 import Register from './forms/Register';
+import Image from "next/image";
 
 const AuthDialog: React.FC<AuthDialogProps> = ({onClose, open}) => {
     const [formType, setFormType] = useState<'login' | 'register'>(
@@ -27,8 +27,10 @@ const AuthDialog: React.FC<AuthDialogProps> = ({onClose, open}) => {
             <DialogContent>
                 <DialogContentText>
                     <div className={styles.content}>
-                        <img
+                        <Image
                             src="https://www.seekpng.com/png/detail/7-71544_animation-man-running-entrenar-me.png"
+                            width={300}
+                            height={300}
                             alt="running man"
                         />
                         <div className={styles.contentWrapper}>
