@@ -89,7 +89,8 @@ button.save_btn {
   width: 20%;
   padding: 0 30px;
   border-bottom-right-radius: 10px;
-  min-height: 150vh;
+  position: sticky;
+  height: calc(100vh - 60px);
 }
 
 .rightSide {

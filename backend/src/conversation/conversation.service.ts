@@ -16,8 +16,8 @@ export class ConversationService {
         });
     }
 
-    getConversation(userId: number) {
-        return this.repository.findOne({
+    getConversations(userId: number) {
+        return this.repository.find({
             where: [
                 {sender: {id: userId}},
                 {receiver: {id: userId}}

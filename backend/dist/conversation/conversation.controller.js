@@ -24,8 +24,8 @@ let ConversationController = class ConversationController {
     create(createConversationDto) {
         return this.ConversationService.create(createConversationDto);
     }
-    getConversation(userId) {
-        return this.ConversationService.getConversation(userId);
+    getConversations(userId) {
+        return this.ConversationService.getConversations(userId);
     }
 };
 __decorate([
@@ -42,7 +42,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", void 0)
-], ConversationController.prototype, "getConversation", null);
+], ConversationController.prototype, "getConversations", null);
 ConversationController = __decorate([
     (0, common_1.Controller)('conversations'),
     __metadata("design:paramtypes", [conversation_service_1.ConversationService])

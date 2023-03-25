@@ -3,7 +3,7 @@ import { UserService } from '../user/user.service';
 import { UserEntity } from '../user/entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from '../user/dto/create-user.dto';
-import {FileService, FileType} from "../file/file.service";
+import { FileService, FileType } from '../file/file.service';
 
 @Injectable()
 export class AuthService {
@@ -39,18 +39,18 @@ export class AuthService {
   }
 
   async register(image, dto: CreateUserDto) {
-    let imagePath
+    let imagePath;
     if (image) {
-      imagePath = this.fileService.createFile(FileType.AVATAR, image)
+      imagePath = this.fileService.createFile(FileType.AVATAR, image);
     } else {
-      imagePath = null
+      imagePath = null;
     }
     try {
       const { password, ...userData } = await this.userService.create({
         email: dto.email,
         fullName: dto.fullName,
         password: dto.password,
-        image: imagePath
+        image: imagePath,
       });
       return {
         ...userData,

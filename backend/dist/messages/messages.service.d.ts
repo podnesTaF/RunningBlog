@@ -1,5 +1,5 @@
-import { Repository } from "typeorm";
-import { MessageEntity } from "./entities/message.entity";
+import { Repository } from 'typeorm';
+import { MessageEntity } from './entities/message.entity';
 export declare class MessageService {
     private repository;
     constructor(repository: Repository<MessageEntity>);
@@ -12,5 +12,5 @@ export declare class MessageService {
             id: number;
         };
     } & MessageEntity>;
-    getChatMessages(conversationId: number): Promise<MessageEntity[]>;
+    getChatMessages(conversationId: number): Promise<any[]>;
 }

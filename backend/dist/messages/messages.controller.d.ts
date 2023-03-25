@@ -12,5 +12,5 @@ export declare class MessageController {
             id: number;
         };
     } & import("./entities/message.entity").MessageEntity>;
-    getChatMessages(conversationId: string): Promise<import("./entities/message.entity").MessageEntity[]>;
+    getChatMessages(conversationId: string): Promise<any[]>;
 }

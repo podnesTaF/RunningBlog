@@ -9,12 +9,12 @@ interface ConversationProps {
 }
 
 const Conversation: React.FC<ConversationProps> = ({currentUser, conversation}) => {
-    const publicFolder = process.env.NEXT_PUBLIC_PUBLIC_FOLDER;
+
     const [user, setUser] = useState(conversation.sender.id === currentUser.id ? conversation.receiver : conversation.sender);
 
     return (
         <div className={styles.conversation}>
-            <img className={styles.conversationImg} src={user?.image ? publicFolder + user.image : publicFolder + "images/noAvatar.png" } alt="image"/>
+            <img className={styles.conversationImg} src={user?.image ? 'http://localhost:4000/' + user.image : 'http://localhost:4000/' + "images/noAvatar.png" } alt="image"/>
             <span className={styles.conversationName}>{user?.fullName}</span>
         </div>
     );

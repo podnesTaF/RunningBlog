@@ -1,4 +1,4 @@
-import { ConversationService } from "./conversation.service";
+import { ConversationService } from './conversation.service';
 export declare class ConversationController {
     private readonly ConversationService;
     constructor(ConversationService: ConversationService);
@@ -10,5 +10,5 @@ export declare class ConversationController {
             id: number;
         };
     } & import("./entities/conversation.entity").ConversationEntity>;
-    getConversation(userId: number): Promise<import("./entities/conversation.entity").ConversationEntity>;
+    getConversations(userId: number): Promise<import("./entities/conversation.entity").ConversationEntity[]>;
 }

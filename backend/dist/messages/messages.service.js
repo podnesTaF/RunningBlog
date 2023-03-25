@@ -25,14 +25,19 @@ let MessageService = class MessageService {
         return this.repository.save({
             conversation: { id: conversationId },
             text,
-            sender: { id: userId }
+            sender: { id: userId },
         });
     }
-    getChatMessages(conversationId) {
-        return this.repository.find({
+    async getChatMessages(conversationId) {
+        const messages = await this.repository.find({
             where: { conversation: { id: conversationId } },
-            relations: ['conversation', 'sender']
+            relations: ['conversation', 'sender'],
         });
+        const reversedMessages = [];
+        for (let i = messages.length - 1; i > 0; i--) {
+            reversedMessages.push(messages[i]);
+        }
+        return reversedMessages;
     }
 };
 MessageService = __decorate([

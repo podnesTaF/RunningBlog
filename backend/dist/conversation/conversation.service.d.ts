@@ -14,5 +14,5 @@ export declare class ConversationService {
             id: number;
         };
     } & ConversationEntity>;
-    getConversation(userId: number): Promise<ConversationEntity>;
+    getConversations(userId: number): Promise<ConversationEntity[]>;
 }

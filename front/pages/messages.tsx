@@ -25,7 +25,8 @@ const MessagesPage:NextPage<MessagesPageProps> = ({conversations}) => {
 
 export const getServerSideProps = async (ctx: any) => {
     try {
-        const conversations = await Api().conversation.getByUser();
+        const conversations = await Api(ctx).conversation.getByUser();
+        console.log('conversations', conversations)
         return {
             props: {
                 conversations,

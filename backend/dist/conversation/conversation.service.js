@@ -27,8 +27,8 @@ let ConversationService = class ConversationService {
             receiver: { id: receiverId }
         });
     }
-    getConversation(userId) {
-        return this.repository.findOne({
+    getConversations(userId) {
+        return this.repository.find({
             where: [
                 { sender: { id: userId } },
                 { receiver: { id: userId } }

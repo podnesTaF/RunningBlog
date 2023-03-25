@@ -4,12 +4,15 @@ import {
   UseGuards,
   Request,
   Get,
-  Body, UseInterceptors, UploadedFiles, Res,
+  Body,
+  UseInterceptors,
+  UploadedFiles,
+  Res,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { CreateUserDto } from '../user/dto/create-user.dto';
-import {FileFieldsInterceptor} from "@nestjs/platform-express";
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 
 @Controller('auth')
 export class AuthController {
@@ -22,12 +25,10 @@ export class AuthController {
   }
 
   @Post('register')
-  @UseInterceptors(FileFieldsInterceptor([
-    {name: 'image', maxCount: 1},
-  ]))
+  @UseInterceptors(FileFieldsInterceptor([{ name: 'image', maxCount: 1 }]))
   register(@UploadedFiles() files, @Body() dto: CreateUserDto) {
-    const {image} = files
-    if(image) {
+    const { image } = files;
+    if (image) {
       return this.authService.register(image[0], dto);
     } else {
       return this.authService.register(null, dto);

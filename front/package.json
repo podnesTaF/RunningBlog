@@ -27,6 +27,7 @@
     "react-hook-form": "^7.39.5",
     "react-redux": "^8.0.5",
     "sass": "^1.56.1",
+    "socket.io-client": "^4.6.0",
     "yup": "^0.32.11"
   },
   "devDependencies": {

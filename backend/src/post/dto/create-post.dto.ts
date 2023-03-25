@@ -13,7 +13,7 @@ export class CreatePostDto {
   @IsString()
   title: string;
 
-  @IsString()
+    @IsString()
   text: string;
 
   @IsOptional()
